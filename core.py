@@ -1,10 +1,29 @@
 import os
 import re
 import json
-import tempfile
 import urllib.request
 import urllib.parse
 import anthropic
+from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled
+from youtube_transcript_api.proxies import WebshareProxyConfig, GenericProxyConfig
+
+
+def _build_ytt():
+    webshare_user = os.environ.get("WEBSHARE_USERNAME", "")
+    webshare_pass = os.environ.get("WEBSHARE_PASSWORD", "")
+    generic_proxy = os.environ.get("HTTPS_PROXY", "") or os.environ.get("HTTP_PROXY", "")
+
+    if webshare_user and webshare_pass:
+        return YouTubeTranscriptApi(proxy_config=WebshareProxyConfig(
+            proxy_username=webshare_user,
+            proxy_password=webshare_pass,
+        ))
+    elif generic_proxy:
+        return YouTubeTranscriptApi(proxy_config=GenericProxyConfig(
+            http_url=generic_proxy,
+            https_url=generic_proxy,
+        ))
+    return YouTubeTranscriptApi()
 
 
 def _extract_video_id(url: str) -> str:
@@ -16,7 +35,6 @@ def _extract_video_id(url: str) -> str:
 
 
 def _get_title_oembed(url: str) -> str:
-    """Fetch video title via YouTube oEmbed — no auth, no bot detection."""
     try:
         oembed_url = f"https://www.youtube.com/oembed?url={urllib.parse.quote(url)}&format=json"
         with urllib.request.urlopen(oembed_url, timeout=5) as r:
@@ -27,32 +45,21 @@ def _get_title_oembed(url: str) -> str:
 
 
 def get_transcript(url: str) -> tuple[str, str]:
-    """Fetch transcript via Supadata API + title via oEmbed."""
-    api_key = os.environ.get("SUPADATA_API_KEY", "")
-    if not api_key:
-        raise ValueError("SUPADATA_API_KEY not configured")
-
-    # Get title
+    video_id = _extract_video_id(url)
     title = _get_title_oembed(url)
+    ytt = _build_ytt()
 
-    # Get transcript
-    req_url = f"https://api.supadata.ai/v1/youtube/transcript?url={urllib.parse.quote(url)}&text=true"
-    request = urllib.request.Request(req_url, headers={
-        "x-api-key": api_key,
-        "Authorization": f"Bearer {api_key}",
-    })
     try:
-        with urllib.request.urlopen(request, timeout=30) as r:
-            data = json.loads(r.read())
-    except urllib.error.HTTPError as e:
-        body = e.read().decode("utf-8", errors="ignore")
-        raise ValueError(f"Supadata error {e.code}: {body}")
+        transcript_list = ytt.fetch(video_id, languages=["en", "en-US", "en-GB", "a.en"])
+    except (NoTranscriptFound, TranscriptsDisabled):
+        all_transcripts = ytt.list(video_id)
+        transcript_obj = next(iter(all_transcripts), None)
+        if transcript_obj is None:
+            raise ValueError("This video has no subtitles. Please try a video with auto-generated captions.")
+        transcript_list = transcript_obj.fetch()
 
-    content = data.get("content", "") or data.get("transcript", "") or data.get("text", "")
-    if not content:
-        raise ValueError(f"No transcript returned. Response: {data}")
-
-    return content, title
+    text = " ".join(chunk["text"] for chunk in transcript_list)
+    return text, title
 
 
 def generate_content(transcript: str, api_key: str) -> dict:
