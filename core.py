@@ -4,11 +4,7 @@ import json
 import tempfile
 import urllib.request
 import urllib.parse
-import yt_dlp
-import whisper
 import anthropic
-from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled
-_ytt = YouTubeTranscriptApi()
 
 
 def _extract_video_id(url: str) -> str:
@@ -30,59 +26,26 @@ def _get_title_oembed(url: str) -> str:
         return "Unknown"
 
 
-def get_transcript_fast(url: str) -> tuple[str, str]:
-    """YouTube captions + oEmbed title — fully bot-proof, no yt-dlp."""
-    video_id = _extract_video_id(url)
+def get_transcript(url: str) -> tuple[str, str]:
+    """Fetch transcript via Supadata API + title via oEmbed."""
+    api_key = os.environ.get("SUPADATA_API_KEY", "")
+    if not api_key:
+        raise ValueError("SUPADATA_API_KEY not configured")
+
+    # Get title
     title = _get_title_oembed(url)
 
-    try:
-        # Try English first
-        transcript_list = _ytt.fetch(video_id, languages=["en", "en-US", "en-GB", "a.en"])
-    except (NoTranscriptFound, TranscriptsDisabled):
-        # Try any available language
-        all_transcripts = _ytt.list(video_id)
-        transcript_obj = next(iter(all_transcripts), None)
-        if transcript_obj is None:
-            raise NoTranscriptFound(video_id, ["any"], {})
-        transcript_list = transcript_obj.fetch()
+    # Get transcript
+    req_url = f"https://api.supadata.ai/v1/youtube/transcript?url={urllib.parse.quote(url)}&text=true"
+    request = urllib.request.Request(req_url, headers={"x-api-key": api_key})
+    with urllib.request.urlopen(request, timeout=30) as r:
+        data = json.loads(r.read())
 
-    text = " ".join(chunk["text"] for chunk in transcript_list)
-    return text, title
+    content = data.get("content", "")
+    if not content:
+        raise ValueError("No transcript available for this video.")
 
-
-def download_audio(url: str, output_dir: str) -> tuple[str, str]:
-    ydl_opts = {
-        "format": "bestaudio/best",
-        "outtmpl": os.path.join(output_dir, "%(id)s.%(ext)s"),
-        "postprocessors": [{
-            "key": "FFmpegExtractAudio",
-            "preferredcodec": "mp3",
-            "preferredquality": "128",
-        }],
-        "quiet": True,
-        "no_warnings": True,
-    }
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=True)
-        video_id = info["id"]
-        title = info.get("title", "Unknown")
-        return os.path.join(output_dir, f"{video_id}.mp3"), title
-
-
-def transcribe(audio_path: str) -> str:
-    model = whisper.load_model("base")
-    result = model.transcribe(audio_path)
-    return result["text"]
-
-
-def get_transcript(url: str) -> tuple[str, str]:
-    """Return (transcript, title). Uses YouTube captions."""
-    try:
-        return get_transcript_fast(url)
-    except (NoTranscriptFound, TranscriptsDisabled):
-        raise ValueError("This video has no subtitles/captions. Please try a video with auto-generated captions enabled.")
-    except Exception as e:
-        raise ValueError(f"Could not get transcript: {str(e)}")
+    return content, title
 
 
 def generate_content(transcript: str, api_key: str) -> dict:
