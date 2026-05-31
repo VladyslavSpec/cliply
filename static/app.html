@@ -25,18 +25,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 .btn-upgrade{background:var(--accent);color:white;padding:0.45rem 1rem;border-radius:8px;font-weight:600;font-size:0.85rem;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
 .btn-upgrade:hover{background:var(--accent-dark)}
 
-/* ── PAGE TABS ── */
-.page-tabs{display:flex;border-bottom:2px solid var(--border);background:white;padding:0 2rem;position:sticky;top:53px;z-index:40}
-.page-tab{background:none;border:none;border-bottom:3px solid transparent;padding:0.85rem 1.5rem;font-size:0.95rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:color .2s;margin-bottom:-2px}
-.page-tab span{display:inline-block;transition:transform .15s}
-.page-tab:hover span{transform:scale(1.1)}
-.page-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
-.page-tab:hover:not(.active){color:var(--text)}
-
-/* ── PAGES ── */
-.page{display:none}
-.page.active{display:block}
-
 /* ── CREATE LAYOUT ── */
 .create-wrap{display:grid;grid-template-columns:1fr 340px;gap:0;min-height:calc(100vh - 105px)}
 .create-left{padding:2rem;border-right:1px solid var(--border)}
@@ -100,30 +88,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 .tool-area-title{font-size:0.8rem;font-weight:700;color:var(--accent);margin-bottom:0.75rem;display:flex;align-items:center;gap:6px}
 .tool-output{margin-top:0.75rem}
 
-/* ── PRICING PAGE ── */
-.pricing-wrap{max-width:620px;margin:0 auto;padding:2.5rem 2rem}
-.pricing-wrap h2{font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem}
-.pricing-wrap .sub{color:var(--muted);font-size:0.95rem;margin-bottom:2rem}
-.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.plan{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.75rem}
-.plan.featured{border-color:var(--accent);background:white;box-shadow:0 0 0 4px var(--accent-light)}
-.plan-name{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.5rem}
-.plan.featured .plan-name{color:var(--accent)}
-.plan-price-row{display:flex;align-items:baseline;gap:5px;margin-bottom:0.3rem;flex-wrap:wrap}
-.plan-price-big{font-size:2.2rem;font-weight:900;letter-spacing:-0.03em}
-.plan-price-mo{font-size:0.9rem;font-weight:500;color:var(--muted)}
-.old-price{font-size:1.6rem;text-decoration:line-through;color:#9CA3AF;font-weight:700}
-.plan-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.25rem}
-.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem}
-.plan-features li{font-size:0.85rem;display:flex;align-items:center;gap:0.5rem}
-.plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
-.plan-btn{width:100%;padding:0.7rem;border-radius:10px;font-weight:600;font-size:0.9rem;cursor:pointer;border:none;transition:all .2s;font-family:'Inter',sans-serif}
-.plan-btn-free{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
-.plan-btn-free:hover{border-color:var(--accent);color:var(--accent)}
-.plan-btn-pro{background:var(--accent);color:white}
-.plan-btn-pro:hover{background:var(--accent-dark)}
-.pro-active-badge{width:100%;padding:0.7rem;border-radius:10px;font-weight:600;font-size:0.9rem;text-align:center;background:#f0fdf4;color:#10b981;border:1.5px solid #10b981}
-
 /* ── UPGRADE MODAL ── */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:none;align-items:center;justify-content:center;padding:1.5rem}
 .modal-overlay.show{display:flex}
@@ -141,12 +105,9 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 
 @media(max-width:800px){
   nav{padding:0.75rem 1.25rem}
-  .page-tabs{padding:0 1.25rem}
   .create-wrap{grid-template-columns:1fr;min-height:auto}
   .create-left{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem 1.25rem}
   .create-right{padding:1.25rem}
-  .plans-grid{grid-template-columns:1fr}
-  .pricing-wrap{padding:1.75rem 1.25rem}
   .tabs{flex-wrap:wrap}
   .input-wrap{flex-direction:column}
 }
@@ -163,16 +124,10 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
   </div>
 </nav>
 
-<!-- PAGE TABS -->
-<div class="page-tabs">
-  <button class="page-tab active" onclick="showPage('create',this)"><span>Create</span></button>
-  <a href="/static/plans.html" class="page-tab" style="text-decoration:none"><span>Plans</span></a>
-</div>
-
 <!-- ══════════════════════════════════════════
      PAGE: CREATE (two columns)
 ══════════════════════════════════════════ -->
-<div class="page active" id="page-create">
+<div id="page-create">
   <div class="create-wrap">
 
     <!-- LEFT: Repurpose All -->
@@ -258,46 +213,6 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     PAGE: PLANS
-══════════════════════════════════════════ -->
-<div class="page" id="page-pricing">
-  <div class="pricing-wrap">
-    <h2>Simple pricing</h2>
-    <p class="sub">Start free. Upgrade when you need more.</p>
-    <div class="plans-grid">
-      <div class="plan">
-        <div class="plan-name">Free</div>
-        <div class="plan-price-row"><span class="plan-price-big">$0</span></div>
-        <div class="plan-desc">Perfect for trying it out</div>
-        <ul class="plan-features">
-          <li>1 repurpose per day</li>
-          <li>All 4 content types</li>
-          <li>Quick Tools access</li>
-          <li>No signup required</li>
-        </ul>
-        <button class="plan-btn plan-btn-free" onclick="showPage('create', document.querySelector('.page-tab'))">Start for free</button>
-      </div>
-      <div class="plan featured">
-        <div class="plan-name">Pro</div>
-        <div class="plan-price-row">
-          <span class="old-price">$31.99</span>
-          <span class="plan-price-big">$19</span>
-          <span class="plan-price-mo">/mo</span>
-        </div>
-        <div class="plan-desc">For serious content creators</div>
-        <ul class="plan-features">
-          <li>Unlimited repurposes</li>
-          <li>All Quick Tools — unlimited</li>
-          <li>Priority processing</li>
-          <li>Cancel anytime</li>
-        </ul>
-        <button class="plan-btn plan-btn-pro" id="pricing-upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- UPGRADE MODAL -->
 <div class="modal-overlay" id="upgrade-modal">
   <div class="modal-card">
@@ -307,7 +222,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
     <p>Upgrade to Pro for unlimited repurposes and all quick tools.</p>
     <div class="modal-btns">
       <button class="modal-btn-primary" onclick="goToCheckout()">Upgrade to Pro — $19/mo →</button>
-      <button class="modal-btn-outline" onclick="openPricingFromModal()">See all plans</button>
+      <button class="modal-btn-outline" onclick="location.href='/static/plans.html'">See all plans</button>
     </div>
   </div>
 </div>
@@ -321,17 +236,6 @@ let currentTool = 'tiktok';
 function getProEmail() { return localStorage.getItem('cliply_pro_email') || ''; }
 function isPro() { return localStorage.getItem('cliply_pro') === 'true'; }
 
-// ── Page switching ─────────────────────────────────
-function showPage(name, clickedBtn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  if (!clickedBtn || !clickedBtn.classList) {
-    clickedBtn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + name + "'"));
-  }
-  if (clickedBtn) clickedBtn.classList.add('active');
-}
-
 // ── Upgrade helpers ────────────────────────────────
 async function goToCheckout() {
   const res = await fetch('/create-checkout-session', {method:'POST'});
@@ -340,12 +244,6 @@ async function goToCheckout() {
 }
 function openModal() { document.getElementById('upgrade-modal').classList.add('show'); }
 function closeModal() { document.getElementById('upgrade-modal').classList.remove('show'); }
-function openPricingFromModal() {
-  closeModal();
-  const btn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'pricing'"));
-  showPage('pricing', btn);
-}
-
 // ── Repurpose (left column) ────────────────────────
 async function repurpose() {
   const url = document.getElementById('url-input').value.trim();
@@ -483,12 +381,6 @@ function hideProgress(id) { document.getElementById(id).classList.remove('show')
 document.getElementById('url-input').addEventListener('keydown', e => { if(e.key==='Enter') repurpose(); });
 document.getElementById('tool-url-input').addEventListener('keydown', e => { if(e.key==='Enter') runTool(); });
 
-// ── Open Plans tab via URL hash ────────────────────
-if (location.hash === '#pricing') {
-  const btn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes("'pricing'"));
-  showPage('pricing', btn);
-}
-
 // ── Pro status on load ─────────────────────────────
 (async () => {
   const email = getProEmail();
@@ -508,8 +400,6 @@ function setProUI() {
   document.getElementById('usage-text').textContent = 'Pro — Unlimited';
   const btn = document.getElementById('upgrade-btn');
   btn.textContent = '✓ Pro'; btn.style.background = '#10b981'; btn.style.cursor = 'default'; btn.onclick = null;
-  const pb = document.getElementById('pricing-upgrade-btn');
-  if (pb) pb.outerHTML = '<div class="pro-active-badge">✓ You\'re on Pro</div>';
 }
 </script>
 </body>
