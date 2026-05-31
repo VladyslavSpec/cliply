@@ -154,6 +154,10 @@ h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem
 let usageCount = 0;
 const MAX_FREE = 1;
 
+function getProEmail() {
+  return localStorage.getItem('cliply_pro_email') || '';
+}
+
 async function repurpose() {
   const url = document.getElementById('url-input').value.trim();
   if (!url) return;
@@ -172,10 +176,13 @@ async function repurpose() {
   hideResult();
 
   try {
+    const body = {url};
+    if (isPro && getProEmail()) body.email = getProEmail();
+
     const res = await fetch('/repurpose', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({url})
+      body: JSON.stringify(body)
     });
 
     if (!res.ok) {
@@ -273,10 +280,36 @@ document.getElementById('upgrade-btn').addEventListener('click', async () => {
   if (data.url) location.href = data.url;
 });
 
-// Check pro status
-if (localStorage.getItem('cliply_pro') === 'true') {
-  document.getElementById('usage-text').textContent = 'Pro — Unlimited';
-}
+// Check pro status on load
+(async () => {
+  const email = getProEmail();
+  if (email) {
+    try {
+      const res = await fetch('/verify-subscription', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({email})
+      });
+      const data = await res.json();
+      if (data.pro) {
+        localStorage.setItem('cliply_pro', 'true');
+        document.getElementById('usage-text').textContent = 'Pro — Unlimited';
+        document.getElementById('upgrade-btn').textContent = '✓ Pro';
+        document.getElementById('upgrade-btn').style.background = '#10b981';
+        document.getElementById('upgrade-btn').style.cursor = 'default';
+        document.getElementById('upgrade-btn').onclick = null;
+      } else {
+        // subscription may have expired
+        localStorage.removeItem('cliply_pro');
+        localStorage.removeItem('cliply_pro_email');
+      }
+    } catch {}
+  } else if (localStorage.getItem('cliply_pro') === 'true') {
+    document.getElementById('usage-text').textContent = 'Pro — Unlimited';
+    document.getElementById('upgrade-btn').textContent = '✓ Pro';
+    document.getElementById('upgrade-btn').style.background = '#10b981';
+  }
+})();
 </script>
 </body>
 </html>

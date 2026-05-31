@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Pro — Cliply</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#FF6B6B;--text:#1A1A2E;--muted:#6B7280;--bg:#FFFFFF;--surface:#F9FAFB;--border:#E5E7EB}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem}
+.card{max-width:480px;width:100%;text-align:center}
+.icon{width:80px;height:80px;background:linear-gradient(135deg,#FF6B6B,#ff8e8e);border-radius:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1.75rem;box-shadow:0 8px 32px rgba(255,107,107,0.3);font-size:2.25rem}
+h1{font-size:2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.75rem}
+.sub{color:var(--muted);font-size:1rem;line-height:1.6;margin-bottom:2rem}
+.email-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:6px 16px;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:2rem}
+.features{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1.5rem;text-align:left;margin-bottom:2rem}
+.feature{display:flex;align-items:center;gap:0.75rem;font-size:0.9rem;padding:0.5rem 0;border-bottom:1px solid var(--border)}
+.feature:last-child{border-bottom:none}
+.feature-check{width:22px;height:22px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;flex-shrink:0}
+.btn{display:block;background:var(--accent);color:white;padding:0.9rem 2rem;border-radius:12px;font-weight:700;font-size:1rem;text-decoration:none;transition:background .2s;margin-top:0.5rem}
+.btn:hover{background:#e85555}
+.redirect-note{font-size:0.8rem;color:var(--muted);margin-top:1rem}
+.loader{display:inline-block;width:16px;height:16px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin-right:6px;vertical-align:middle}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="icon">🎉</div>
+  <h1>You're now Pro!</h1>
+  <p class="sub">Your subscription is active. Unlimited repurposes, priority processing — everything unlocked.</p>
+
+  <div class="email-badge" id="email-badge">
+    <span class="loader"></span> Activating...
+  </div>
+
+  <div class="features">
+    <div class="feature"><div class="feature-check">✓</div><span>Unlimited video repurposes per day</span></div>
+    <div class="feature"><div class="feature-check">✓</div><span>All 4 content types — TikTok, LinkedIn, Twitter, Newsletter</span></div>
+    <div class="feature"><div class="feature-check">✓</div><span>Priority processing queue</span></div>
+    <div class="feature"><div class="feature-check">✓</div><span>Cancel anytime from your Stripe portal</span></div>
+  </div>
+
+  <a href="/app" class="btn" id="go-btn">Start repurposing →</a>
+  <p class="redirect-note" id="redirect-note">Redirecting automatically in <span id="countdown">4</span>s...</p>
+</div>
+
+<script>
+(async () => {
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const badge = document.getElementById('email-badge');
+
+  if (sessionId) {
+    try {
+      const res = await fetch(`/session-details/${sessionId}`);
+      const data = await res.json();
+      if (data.email) {
+        localStorage.setItem('cliply_pro', 'true');
+        localStorage.setItem('cliply_pro_email', data.email);
+        badge.innerHTML = `✓ &nbsp;<strong>${data.email}</strong>&nbsp; — Pro active`;
+      } else {
+        badge.textContent = '✓ Pro activated';
+      }
+    } catch {
+      badge.textContent = '✓ Pro activated';
+      localStorage.setItem('cliply_pro', 'true');
+    }
+  } else {
+    badge.textContent = '✓ Pro activated';
+    localStorage.setItem('cliply_pro', 'true');
+  }
+
+  // Countdown redirect
+  let n = 4;
+  const tick = setInterval(() => {
+    n--;
+    const el = document.getElementById('countdown');
+    if (el) el.textContent = n;
+    if (n <= 0) { clearInterval(tick); location.href = '/app'; }
+  }, 1000);
+})();
+</script>
+</body>
+</html>

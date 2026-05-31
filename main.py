@@ -27,6 +27,21 @@ def get_ip(req: Request) -> str:
     return req.client.host
 
 
+def check_pro(email: str) -> bool:
+    if not email or not stripe.api_key:
+        return False
+    try:
+        customers = stripe.Customer.list(email=email, limit=1)
+        if not customers.data:
+            return False
+        subs = stripe.Subscription.list(
+            customer=customers.data[0].id, status="active", limit=1
+        )
+        return len(subs.data) > 0
+    except Exception:
+        return False
+
+
 @app.get("/")
 def index():
     return FileResponse("static/index.html")
@@ -39,6 +54,7 @@ def app_page():
 
 class RepurposeRequest(BaseModel):
     url: str
+    email: str = ""
 
 
 @app.post("/repurpose")
@@ -46,9 +62,13 @@ async def repurpose(body: RepurposeRequest, req: Request):
     ip = get_ip(req)
     today = str(date.today())
 
-    # Rate limit for free tier
-    if request_counts[ip][today] >= LIMITS["free"]:
-        raise HTTPException(status_code=429, detail="Daily free limit reached. Upgrade to Pro.")
+    is_pro = check_pro(body.email)
+
+    if not is_pro and request_counts[ip][today] >= LIMITS["free"]:
+        raise HTTPException(
+            status_code=429,
+            detail="Daily free limit reached. Upgrade to Pro for unlimited repurposes."
+        )
 
     api_key = os.environ.get("ANTHROPIC_API_KEY")
     if not api_key:
@@ -60,7 +80,9 @@ async def repurpose(body: RepurposeRequest, req: Request):
             transcript = await asyncio.to_thread(transcribe, audio_path)
             content = await asyncio.to_thread(generate_content, transcript, api_key)
 
-        request_counts[ip][today] += 1
+        if not is_pro:
+            request_counts[ip][today] += 1
+
         return {"title": title, "transcript": transcript, "content": content}
 
     except Exception as e:
@@ -82,17 +104,22 @@ async def create_checkout_session(req: Request):
     return {"url": session.url}
 
 
+@app.get("/session-details/{session_id}")
+def session_details(session_id: str):
+    if not stripe.api_key:
+        raise HTTPException(status_code=500, detail="Stripe not configured")
+    try:
+        session = stripe.checkout.Session.retrieve(session_id)
+        email = session.customer_details.email if session.customer_details else ""
+        return {"email": email}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
 class EmailRequest(BaseModel):
     email: str
 
 
 @app.post("/verify-subscription")
 def verify_subscription(request: EmailRequest):
-    if not stripe.api_key:
-        return {"pro": False}
-    customers = stripe.Customer.list(email=request.email, limit=1)
-    if not customers.data:
-        return {"pro": False}
-    customer = customers.data[0]
-    subscriptions = stripe.Subscription.list(customer=customer.id, status="active", limit=1)
-    return {"pro": len(subscriptions.data) > 0}
+    return {"pro": check_pro(request.email)}
