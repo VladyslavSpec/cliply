@@ -580,12 +580,6 @@ function applyTranslations() {
   });
 }
 
-// Stripe checkout
-document.getElementById('upgrade-btn').addEventListener('click', async () => {
-  const res = await fetch('/create-checkout-session', {method:'POST'});
-  const data = await res.json();
-  if (data.url) location.href = data.url;
-});
 
 // Init
 setLang(currentLang);
