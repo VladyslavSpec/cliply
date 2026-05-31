@@ -277,11 +277,19 @@ async function repurpose() {
     if (!isPro()) usageCount++;
     displayResult(data);
   } catch(e) {
-    if (!e.message.includes('429')) alert(e.message);
+    alert('Error: ' + (e.message || 'Something went wrong'));
   } finally {
     btn.disabled = false; btn.textContent = 'Go →';
     hideProgress('progress');
   }
+}
+
+function setBoxContent(elId, text) {
+  const el = document.getElementById(elId);
+  const btn = el.querySelector('.copy-btn');
+  el.innerHTML = '';
+  el.appendChild(document.createTextNode(text || ''));
+  if (btn) el.appendChild(btn);
 }
 
 function displayResult(data) {
@@ -291,9 +299,9 @@ function displayResult(data) {
   (data.content.tiktok_hooks || []).forEach(hook => {
     hooksEl.innerHTML += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">Copy</button></div>`;
   });
-  document.getElementById('linkedin-content').childNodes[0].textContent = data.content.linkedin_post || '';
-  document.getElementById('twitter-content').childNodes[0].textContent = data.content.twitter_thread || '';
-  document.getElementById('newsletter-content').childNodes[0].textContent = data.content.newsletter || '';
+  setBoxContent('linkedin-content', data.content.linkedin_post);
+  setBoxContent('twitter-content', data.content.twitter_thread);
+  setBoxContent('newsletter-content', data.content.newsletter);
   document.getElementById('transcript-box').textContent = data.transcript || '';
   showResult();
 }
