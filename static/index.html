@@ -188,7 +188,7 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   </a>
   <div class="nav-links">
     <a href="#how" data-i18n="nav.how">How it works</a>
-    <a href="#output" data-i18n="nav.output">What you get</a>
+    <a href="/app" data-i18n="nav.create">Create</a>
     <a href="/app#pricing" data-i18n="nav.pricing">Plans</a>
   </div>
   <div class="nav-right">
@@ -358,13 +358,18 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   </div>
 </section>
 
-<!-- WHAT YOU GET -->
+<!-- CREATE CTA -->
 <section class="output-section" id="output">
 <div class="output-inner">
-  <div class="section-tag" data-i18n="out.tag">What you get</div>
-  <h2 class="section-title" data-i18n="out.title">Four outputs. One video.</h2>
+  <div class="section-tag">Try it now</div>
+  <h2 class="section-title">Ready to repurpose your first video?</h2>
 
-  <div class="live-cards">
+  <div style="display:flex;gap:1rem;align-items:center;margin-top:2rem;flex-wrap:wrap">
+    <a href="/app" style="background:var(--accent);color:white;padding:0.9rem 2rem;border-radius:14px;font-weight:700;font-size:1rem;text-decoration:none;transition:background .2s" onmouseover="this.style.background='#e85555'" onmouseout="this.style.background='var(--accent)'">Start creating for free →</a>
+    <span style="font-size:0.85rem;color:var(--muted)">No signup. 1 free repurpose/day.</span>
+  </div>
+
+  <div class="live-cards" style="display:none">
 
     <!-- TikTok Card -->
     <div class="live-card animate-on-scroll" style="--card-color:#FF6B6B">
