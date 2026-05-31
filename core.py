@@ -33,9 +33,20 @@ def get_transcript_fast(url: str) -> tuple[str, str]:
     """YouTube captions + oEmbed title — fully bot-proof, no yt-dlp."""
     video_id = _extract_video_id(url)
     title = _get_title_oembed(url)
-    transcript_list = YouTubeTranscriptApi.get_transcript(
-        video_id, languages=["en", "en-US", "en-GB", "a.en"]
-    )
+
+    try:
+        # Try English first
+        transcript_list = YouTubeTranscriptApi.get_transcript(
+            video_id, languages=["en", "en-US", "en-GB", "a.en"]
+        )
+    except (NoTranscriptFound, TranscriptsDisabled):
+        # Try any available language
+        all_transcripts = YouTubeTranscriptApi.list_transcripts(video_id)
+        transcript_obj = next(iter(all_transcripts), None)
+        if transcript_obj is None:
+            raise NoTranscriptFound(video_id, ["any"], {})
+        transcript_list = transcript_obj.fetch()
+
     text = " ".join(chunk["text"] for chunk in transcript_list)
     return text, title
 
@@ -66,14 +77,13 @@ def transcribe(audio_path: str) -> str:
 
 
 def get_transcript(url: str) -> tuple[str, str]:
-    """Return (transcript, title). Uses captions if available, else Whisper."""
+    """Return (transcript, title). Uses YouTube captions."""
     try:
         return get_transcript_fast(url)
-    except (NoTranscriptFound, TranscriptsDisabled, Exception):
-        with tempfile.TemporaryDirectory() as tmp:
-            audio_path, title = download_audio(url, tmp)
-            transcript = transcribe(audio_path)
-            return transcript, title
+    except (NoTranscriptFound, TranscriptsDisabled):
+        raise ValueError("This video has no subtitles/captions. Please try a video with auto-generated captions enabled.")
+    except Exception as e:
+        raise ValueError(f"Could not get transcript: {str(e)}")
 
 
 def generate_content(transcript: str, api_key: str) -> dict:
