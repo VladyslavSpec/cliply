@@ -206,7 +206,7 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
     </div>
   </div>
   <div class="image-slot" id="slot-hero" style="border:none;background:transparent">
-    <video src="/static/images/hero.mp4" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;border-radius:20px;display:block"></video>
+    <video id="hero-video" src="/static/images/hero.mp4" muted playsinline preload="auto" style="width:100%;height:100%;object-fit:cover;border-radius:20px;display:block"></video>
   </div>
 </section>
 
@@ -601,7 +601,60 @@ document.getElementById('upgrade-btn').addEventListener('click', async () => {
 // Init
 setLang(currentLang);
 
-// Scroll animations
+// ── Hero video: play forward on enter, reverse on leave ──────────────────
+const heroVideo = document.getElementById('hero-video');
+let isReversing = false;
+let reverseRAF = null;
+let lastTimestamp = null;
+
+function stopReverse() {
+  isReversing = false;
+  lastTimestamp = null;
+  if (reverseRAF) { cancelAnimationFrame(reverseRAF); reverseRAF = null; }
+}
+
+function playForward() {
+  stopReverse();
+  heroVideo.play().catch(() => {});
+}
+
+function playReverse() {
+  heroVideo.pause();
+  if (isReversing || heroVideo.currentTime <= 0) return;
+  isReversing = true;
+  lastTimestamp = null;
+
+  function step(ts) {
+    if (!isReversing) return;
+    if (lastTimestamp === null) lastTimestamp = ts;
+    const delta = (ts - lastTimestamp) / 1000;
+    lastTimestamp = ts;
+
+    heroVideo.currentTime = Math.max(0, heroVideo.currentTime - delta);
+    if (heroVideo.currentTime <= 0) { stopReverse(); return; }
+    reverseRAF = requestAnimationFrame(step);
+  }
+  reverseRAF = requestAnimationFrame(step);
+}
+
+const heroObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      playForward();
+    } else {
+      playReverse();
+    }
+  });
+}, { threshold: 0.25 });
+
+heroVideo.addEventListener('loadedmetadata', () => {
+  heroObserver.observe(document.getElementById('slot-hero'));
+  // Play immediately if already in view on load
+  const rect = document.getElementById('slot-hero').getBoundingClientRect();
+  if (rect.top < window.innerHeight) playForward();
+});
+
+// ── Scroll animations observer ────────────────────────────────────────────
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
