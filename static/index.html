@@ -41,7 +41,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .btn-outline:hover{border-color:var(--accent);color:var(--accent)}
 
 /* HERO */
-.hero{max-width:1200px;margin:0 auto;padding:5rem 2rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.hero{max-width:1200px;margin:0 auto;padding:2.5rem 2rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
 .hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);color:var(--accent);font-size:0.8rem;font-weight:600;padding:5px 12px;border-radius:100px;margin-bottom:1.25rem}
 .hero h1{font-size:3.5rem;font-weight:900;line-height:1.1;letter-spacing:-0.03em;margin-bottom:1.25rem}
 .hero h1 span{color:var(--accent)}
@@ -56,7 +56,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .image-slot img[src="/static/images/hero.png"]{display:block}
 
 /* STATS */
-.stats{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem}
+.stats{background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.25rem}
 .stats-inner{max-width:1200px;margin:0 auto;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap}
 .stat{text-align:center}
 .stat-num{font-size:2rem;font-weight:800;color:var(--text)}
@@ -112,10 +112,16 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
 .footer-copy{font-size:0.85rem;color:var(--muted)}
 
 /* HOW IT WORKS — checkerboard */
-.how-section{background:#F9FAFB;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:5rem 2rem}
+.how-section{background:#F9FAFB;border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:3rem 2rem}
 .how-inner{max-width:1100px;margin:0 auto}
-.how-row{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:3rem 0;border-bottom:1px dashed var(--border)}
+.how-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0 1rem;border-bottom:none}
 .how-row:last-child{border-bottom:none}
+.step-connector{display:flex;justify-content:center;margin:-0.25rem 0;position:relative;z-index:1}
+.connector-arrow{width:200px;height:80px;overflow:visible}
+.sketch-svg path,.sketch-svg rect,.sketch-svg line,.sketch-svg circle,.sketch-svg polyline,.sketch-svg polygon{stroke-width:3!important}
+.how-step-num{font-size:2.5rem;font-weight:900;color:var(--accent);opacity:.12;line-height:1;margin-bottom:0.4rem;letter-spacing:-0.04em}
+.how-text h3{font-size:1.4rem;font-weight:800;margin-bottom:0.6rem;letter-spacing:-0.02em}
+.section-title{font-size:2rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.75rem}
 .how-row-reverse .how-sketch{order:2}
 .how-row-reverse .how-text{order:1}
 .how-sketch{display:flex;align-items:center;justify-content:center}
@@ -125,11 +131,11 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
 .how-text p{color:var(--muted);font-size:1rem;line-height:1.7}
 
 /* WHAT YOU GET — white bg */
-.output-section{background:white;padding:5rem 2rem}
+.output-section{background:white;padding:3rem 2rem}
 .output-inner{max-width:1100px;margin:0 auto}
 
 /* PRICING — light bg */
-.pricing-section{background:#F9FAFB;border-top:1px solid var(--border);padding:5rem 2rem}
+.pricing-section{background:#F9FAFB;border-top:1px solid var(--border);padding:3rem 2rem}
 .pricing-inner{max-width:1100px;margin:0 auto}
 
 @media(max-width:768px){
@@ -139,7 +145,7 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   .logo{font-size:1rem}
 
   /* Hero */
-  .hero{grid-template-columns:1fr;gap:2rem;padding:2.5rem 1.25rem}
+  .hero{grid-template-columns:1fr;gap:1.5rem;padding:1.75rem 1.25rem}
   .hero h1{font-size:2rem}
   .hero p{font-size:1rem}
   .hero-cta{flex-direction:column;align-items:flex-start;gap:0.75rem}
@@ -150,8 +156,9 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   .stat-num{font-size:1.5rem}
 
   /* How it works */
-  .how-section{padding:3rem 1.25rem}
-  .how-row{grid-template-columns:1fr;gap:1.5rem;padding:2rem 0}
+  .how-section{padding:2rem 1.25rem}
+  .how-row{grid-template-columns:1fr;gap:1rem;padding:1.25rem 0}
+  .step-connector{transform:rotate(90deg)}
   .how-row-reverse .how-sketch{order:0}
   .how-row-reverse .how-text{order:0}
   .how-step-num{font-size:2rem}
@@ -159,11 +166,11 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   .sketch-svg{max-width:240px}
 
   /* What you get */
-  .output-section{padding:3rem 1.25rem}
+  .output-section{padding:2rem 1.25rem}
   .live-cards{grid-template-columns:1fr}
 
   /* Pricing */
-  .pricing-section{padding:3rem 1.25rem}
+  .pricing-section{padding:2rem 1.25rem}
   .pricing-grid{grid-template-columns:1fr;max-width:100%}
 
   /* Footer */
@@ -269,6 +276,14 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
       </div>
     </div>
 
+    <!-- Arrow 1→2 (curves right, matching checkerboard flow) -->
+    <div class="step-connector">
+      <svg class="connector-arrow" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
+        <path d="M 65 8 C 65 44, 135 44, 135 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
+        <polyline points="124,62 135,74 146,62" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+    </div>
+
     <!-- Step 2 (reversed) -->
     <div class="how-row how-row-reverse animate-on-scroll">
       <div class="how-sketch">
@@ -296,6 +311,14 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
         <h3 data-i18n="step2.title">AI transcribes & analyzes</h3>
         <p data-i18n="step2.sub">Whisper transcribes the full audio. Then Claude AI reads it and finds the best hooks, key insights and angles for each platform.</p>
       </div>
+    </div>
+
+    <!-- Arrow 2→3 (curves left, mirroring back) -->
+    <div class="step-connector">
+      <svg class="connector-arrow" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
+        <path d="M 135 8 C 135 44, 65 44, 65 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
+        <polyline points="54,62 65,74 76,62" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
     </div>
 
     <!-- Step 3 -->
