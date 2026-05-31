@@ -6,25 +6,44 @@
 <title>Cliply — Repurpose Video</title>
 <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--accent:#FF6B6B;--accent-dark:#e85555;--accent-light:#fff0f0;--text:#1A1A2E;--muted:#6B7280;--bg:#FFFFFF;--surface:#F9FAFB;--border:#E5E7EB;--radius:12px}
+:root{
+  --accent:#FF6B6B;--accent-dark:#e85555;--accent-light:#fff0f0;
+  --text:#1A1A2E;--muted:#6B7280;--bg:#FFFFFF;--surface:#F9FAFB;
+  --border:#D1D5DB;--radius:12px;
+}
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
 
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);background:white}
+/* ── NAV ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50}
 .logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--text)}
 .logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}
-.nav-right{display:flex;align-items:center;gap:1rem}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
 .usage-badge{font-size:0.8rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:100px}
-.btn-upgrade{background:var(--accent);color:white;padding:0.5rem 1rem;border-radius:8px;font-weight:600;font-size:0.85rem;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
+.btn-upgrade{background:var(--accent);color:white;padding:0.45rem 1rem;border-radius:8px;font-weight:600;font-size:0.85rem;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
 .btn-upgrade:hover{background:var(--accent-dark)}
 
-main{max-width:720px;margin:0 auto;padding:3rem 2rem}
-h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem}
+/* ── PAGE TABS ── */
+.page-tabs{display:flex;border-bottom:2px solid var(--border);background:white;padding:0 2rem;position:sticky;top:53px;z-index:40}
+.page-tab{background:none;border:none;border-bottom:3px solid transparent;padding:0.85rem 1.25rem;font-size:0.92rem;font-weight:600;color:var(--muted);cursor:pointer;font-family:'Inter',sans-serif;transition:color .2s;margin-bottom:-2px;display:inline-flex;align-items:center;gap:6px}
+.page-tab span{display:inline-block;transition:transform .15s}
+.page-tab:hover span{transform:scale(1.1)}
+.page-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.page-tab:hover:not(.active){color:var(--text)}
+
+/* ── PAGE WRAPPER ── */
+.page{display:none}
+.page.active{display:block}
+
+/* ── SHARED MAIN ── */
+main{max-width:720px;margin:0 auto;padding:2.5rem 2rem}
+h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem}
 .subtitle{color:var(--muted);font-size:0.95rem;margin-bottom:2rem}
 
-.input-wrap{display:flex;gap:0.75rem;margin-bottom:2rem}
+/* ── INPUT ── */
+.input-wrap{display:flex;gap:0.75rem;margin-bottom:1.75rem}
 .url-input{flex:1;border:1.5px solid var(--border);border-radius:var(--radius);padding:0.85rem 1rem;font-size:0.95rem;font-family:'Inter',sans-serif;color:var(--text);background:white;transition:border-color .2s;outline:none}
 .url-input:focus{border-color:var(--accent)}
 .url-input::placeholder{color:#9CA3AF}
@@ -32,6 +51,7 @@ h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem
 .go-btn:hover{background:var(--accent-dark)}
 .go-btn:disabled{opacity:0.5;cursor:not-allowed}
 
+/* ── PROGRESS ── */
 .progress{display:none;margin-bottom:2rem}
 .progress.show{display:block}
 .progress-step{display:flex;align-items:center;gap:0.75rem;padding:0.75rem 1rem;border-radius:10px;font-size:0.9rem;margin-bottom:0.5rem;background:var(--surface);border:1px solid var(--border)}
@@ -40,42 +60,98 @@ h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem
 .step-icon{font-size:1.1rem;width:24px;text-align:center}
 .step-text{font-weight:500}
 
+/* ── RESULT ── */
 .result{display:none}
 .result.show{display:block}
-.result-title{font-size:1rem;font-weight:700;margin-bottom:1.5rem;color:var(--muted)}
+.result-title{font-size:0.95rem;font-weight:700;margin-bottom:1.25rem;color:var(--muted)}
 
-.tabs{display:flex;gap:0.25rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:4px;margin-bottom:1.5rem}
+/* ── RESULT TABS ── */
+.tabs{display:flex;gap:0.25rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:4px;margin-bottom:1.5rem}
 .tab{flex:1;padding:0.6rem 0.5rem;border-radius:8px;border:none;background:none;cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--muted);transition:all .2s;font-family:'Inter',sans-serif;text-align:center}
-.tab.active{background:white;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-
+.tab span{display:inline-block;transition:transform .15s}
+.tab:hover span{transform:scale(1.1)}
+.tab.active{background:white;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.12)}
 .tab-content{display:none}
 .tab-content.active{display:block}
 
-.hook-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.75rem;position:relative}
+/* ── CONTENT BOXES ── */
+.hook-card{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:1rem;margin-bottom:0.75rem;position:relative}
 .hook-text{font-size:0.9rem;line-height:1.6;padding-right:2.5rem}
-
-.content-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.25rem;font-size:0.9rem;line-height:1.7;white-space:pre-wrap;position:relative;min-height:120px}
-
+.content-box{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:1.25rem;font-size:0.9rem;line-height:1.7;white-space:pre-wrap;position:relative;min-height:120px}
 .copy-btn{position:absolute;top:0.75rem;right:0.75rem;background:white;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:0.75rem;font-weight:600;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;color:var(--muted)}
 .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
 .copy-btn.copied{background:var(--accent);color:white;border-color:var(--accent)}
-
 .transcript-toggle{font-size:0.8rem;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:1rem;display:inline-block}
-.transcript-box{display:none;margin-top:0.75rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;font-size:0.8rem;color:var(--muted);line-height:1.6;max-height:200px;overflow-y:auto}
+.transcript-box{display:none;margin-top:0.75rem;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;padding:1rem;font-size:0.8rem;color:var(--muted);line-height:1.6;max-height:200px;overflow-y:auto}
 .transcript-box.show{display:block}
 
-.error-box{background:#fff5f5;border:1px solid #fca5a5;border-radius:10px;padding:1rem;color:#dc2626;font-size:0.9rem;display:none;margin-bottom:1rem}
-.error-box.show{display:block}
+/* ── TOOLS PAGE ── */
+.tools-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:2rem}
+.tool-card{border:1.5px solid var(--border);border-radius:14px;padding:1.5rem;cursor:pointer;transition:all .2s;background:white;text-align:left}
+.tool-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(255,107,107,0.12);transform:translateY(-2px)}
+.tool-card.selected{border-color:var(--accent);background:var(--accent-light)}
+.tool-icon{font-size:1.75rem;margin-bottom:0.75rem}
+.tool-card h3{font-size:1rem;font-weight:700;margin-bottom:0.3rem}
+.tool-card p{font-size:0.82rem;color:var(--muted);line-height:1.5}
+.tool-result{display:none}
+.tool-result.show{display:block}
+.tool-back{background:none;border:none;color:var(--muted);font-size:0.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;padding:0;margin-bottom:1.25rem;display:flex;align-items:center;gap:4px;transition:color .2s}
+.tool-back:hover{color:var(--text)}
+
+/* ── PRICING PAGE ── */
+.pricing-wrap{max-width:640px;margin:0 auto;padding:2.5rem 2rem}
+.pricing-wrap h2{font-size:1.5rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.4rem}
+.pricing-wrap p{color:var(--muted);font-size:0.95rem;margin-bottom:2rem}
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.plan{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:1.75rem}
+.plan.featured{border-color:var(--accent);background:white;box-shadow:0 0 0 4px var(--accent-light)}
+.plan-name{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.5rem}
+.plan.featured .plan-name{color:var(--accent)}
+.plan-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:0.3rem;flex-wrap:wrap}
+.plan-price-big{font-size:2.25rem;font-weight:900;letter-spacing:-0.03em}
+.plan-price-mo{font-size:0.95rem;font-weight:500;color:var(--muted)}
+.old-price{font-size:0.95rem;text-decoration:line-through;color:var(--muted);font-weight:500}
+.plan-desc{font-size:0.85rem;color:var(--muted);margin-bottom:1.25rem}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.55rem;margin-bottom:1.5rem}
+.plan-features li{font-size:0.85rem;display:flex;align-items:center;gap:0.5rem}
+.plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.plan-btn{width:100%;padding:0.7rem;border-radius:10px;font-weight:600;font-size:0.9rem;cursor:pointer;border:none;transition:all .2s;font-family:'Inter',sans-serif}
+.plan-btn-free{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
+.plan-btn-free:hover{border-color:var(--accent);color:var(--accent)}
+.plan-btn-pro{background:var(--accent);color:white}
+.plan-btn-pro:hover{background:var(--accent-dark)}
+.pro-active-badge{width:100%;padding:0.7rem;border-radius:10px;font-weight:600;font-size:0.9rem;text-align:center;background:#f0fdf4;color:#10b981;border:1.5px solid #10b981}
+
+/* ── UPGRADE MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:1000;display:none;align-items:center;justify-content:center;padding:1.5rem}
+.modal-overlay.show{display:flex}
+.modal-card{background:white;border-radius:20px;padding:2.5rem 2rem;max-width:420px;width:100%;position:relative;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;width:28px;height:28px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:color .2s}
+.modal-close:hover{color:var(--text)}
+.modal-icon{font-size:2.5rem;margin-bottom:1rem}
+.modal-card h2{font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem}
+.modal-card p{font-size:0.9rem;color:var(--muted);margin-bottom:1.75rem;line-height:1.6}
+.modal-btns{display:flex;flex-direction:column;gap:0.75rem}
+.modal-btn-primary{background:var(--accent);color:white;border:none;border-radius:10px;padding:0.8rem;font-weight:700;font-size:0.95rem;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
+.modal-btn-primary:hover{background:var(--accent-dark)}
+.modal-btn-outline{background:none;color:var(--text);border:1.5px solid var(--border);border-radius:10px;padding:0.8rem;font-weight:600;font-size:0.9rem;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s}
+.modal-btn-outline:hover{border-color:var(--accent);color:var(--accent)}
 
 @media(max-width:600px){
+  nav{padding:0.75rem 1.25rem}
+  .page-tabs{padding:0 1.25rem}
+  main{padding:1.75rem 1.25rem}
   .input-wrap{flex-direction:column}
-  main{padding:2rem 1.25rem}
+  .tools-grid{grid-template-columns:1fr}
+  .plans-grid{grid-template-columns:1fr}
+  .pricing-wrap{padding:1.75rem 1.25rem}
   .tabs{flex-wrap:wrap}
 }
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="/" class="logo">
     <div class="logo-icon">C</div>
@@ -83,233 +159,400 @@ h1{font-size:1.75rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.5rem
   </a>
   <div class="nav-right">
     <span class="usage-badge" id="usage-text">1 free / day</span>
-    <button class="btn-upgrade" id="upgrade-btn">Upgrade to Pro →</button>
+    <button class="btn-upgrade" id="upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
   </div>
 </nav>
 
+<!-- PAGE TABS -->
+<div class="page-tabs">
+  <button class="page-tab active" onclick="showPage('repurpose', this)"><span>↻ Repurpose</span></button>
+  <button class="page-tab" onclick="showPage('tools', this)"><span>⚡ Tools</span></button>
+  <button class="page-tab" onclick="showPage('pricing', this)"><span>💳 Pricing</span></button>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: REPURPOSE
+══════════════════════════════════════════ -->
+<div class="page active" id="page-repurpose">
 <main>
   <h1>Repurpose your video</h1>
-  <p class="subtitle">Paste any YouTube URL below. We'll turn it into 4 pieces of content.</p>
+  <p class="subtitle">Paste any YouTube URL — get TikTok hooks, LinkedIn post, Twitter thread & newsletter in one go.</p>
 
   <div class="input-wrap">
     <input type="text" class="url-input" id="url-input" placeholder="https://www.youtube.com/watch?v=...">
     <button class="go-btn" id="go-btn" onclick="repurpose()">Repurpose →</button>
   </div>
 
-  <div class="error-box" id="error-box"></div>
-
   <div class="progress" id="progress">
-    <div class="progress-step" id="step-download">
-      <span class="step-icon">⬇️</span>
-      <span class="step-text">Downloading audio...</span>
-    </div>
-    <div class="progress-step" id="step-transcribe">
-      <span class="step-icon">🎙️</span>
-      <span class="step-text">Transcribing with Whisper...</span>
-    </div>
-    <div class="progress-step" id="step-generate">
-      <span class="step-icon">🤖</span>
-      <span class="step-text">Generating content with Claude AI...</span>
-    </div>
+    <div class="progress-step" id="step-download"><span class="step-icon">⬇️</span><span class="step-text">Downloading audio...</span></div>
+    <div class="progress-step" id="step-transcribe"><span class="step-icon">🎙️</span><span class="step-text">Transcribing with Whisper...</span></div>
+    <div class="progress-step" id="step-generate"><span class="step-icon">🤖</span><span class="step-text">Generating content with Claude AI...</span></div>
   </div>
 
   <div class="result" id="result">
     <div class="result-title" id="result-title"></div>
-
     <div class="tabs">
-      <button class="tab active" onclick="switchTab('tiktok', this)">🎵 TikTok</button>
-      <button class="tab" onclick="switchTab('linkedin', this)">💼 LinkedIn</button>
-      <button class="tab" onclick="switchTab('twitter', this)">🐦 Twitter</button>
-      <button class="tab" onclick="switchTab('newsletter', this)">📧 Newsletter</button>
+      <button class="tab active" onclick="switchTab('tiktok',this)"><span>🎵 TikTok</span></button>
+      <button class="tab" onclick="switchTab('linkedin',this)"><span>💼 LinkedIn</span></button>
+      <button class="tab" onclick="switchTab('twitter',this)"><span>🐦 Twitter</span></button>
+      <button class="tab" onclick="switchTab('newsletter',this)"><span>📧 Newsletter</span></button>
     </div>
-
-    <div class="tab-content active" id="tab-tiktok">
-      <div id="tiktok-hooks"></div>
-    </div>
-
+    <div class="tab-content active" id="tab-tiktok"><div id="tiktok-hooks"></div></div>
     <div class="tab-content" id="tab-linkedin">
-      <div class="content-box" id="linkedin-content">
-        <button class="copy-btn" onclick="copyContent('linkedin-content', this)">Copy</button>
-      </div>
+      <div class="content-box" id="linkedin-content"><button class="copy-btn" onclick="copyContent('linkedin-content',this)">Copy</button></div>
     </div>
-
     <div class="tab-content" id="tab-twitter">
-      <div class="content-box" id="twitter-content">
-        <button class="copy-btn" onclick="copyContent('twitter-content', this)">Copy</button>
-      </div>
+      <div class="content-box" id="twitter-content"><button class="copy-btn" onclick="copyContent('twitter-content',this)">Copy</button></div>
     </div>
-
     <div class="tab-content" id="tab-newsletter">
-      <div class="content-box" id="newsletter-content">
-        <button class="copy-btn" onclick="copyContent('newsletter-content', this)">Copy</button>
-      </div>
+      <div class="content-box" id="newsletter-content"><button class="copy-btn" onclick="copyContent('newsletter-content',this)">Copy</button></div>
     </div>
-
     <span class="transcript-toggle" onclick="toggleTranscript()">View transcript</span>
     <div class="transcript-box" id="transcript-box"></div>
   </div>
 </main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: TOOLS
+══════════════════════════════════════════ -->
+<div class="page" id="page-tools">
+<main>
+  <!-- Tool selection -->
+  <div id="tools-select">
+    <h1>Tools</h1>
+    <p class="subtitle">Pick one content type and generate just that — faster and more focused.</p>
+    <div class="tools-grid">
+      <div class="tool-card" onclick="selectTool('tiktok')">
+        <div class="tool-icon">🎵</div>
+        <h3>TikTok Hooks</h3>
+        <p>3 viral scroll-stopping hooks with best timestamp moments from your video</p>
+      </div>
+      <div class="tool-card" onclick="selectTool('linkedin')">
+        <div class="tool-icon">💼</div>
+        <h3>LinkedIn Post</h3>
+        <p>Professional post optimized for LinkedIn's algorithm — ready to publish</p>
+      </div>
+      <div class="tool-card" onclick="selectTool('twitter')">
+        <div class="tool-icon">🐦</div>
+        <h3>Twitter Thread</h3>
+        <p>5–7 tweet thread breaking down the key insights from your video</p>
+      </div>
+      <div class="tool-card" onclick="selectTool('newsletter')">
+        <div class="tool-icon">📧</div>
+        <h3>Newsletter</h3>
+        <p>Email section with subject line and key points — ready to send</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tool result view -->
+  <div class="tool-result" id="tool-result">
+    <button class="tool-back" onclick="backToTools()">← Back to tools</button>
+    <h1 id="tool-title">TikTok Hooks</h1>
+    <p class="subtitle" id="tool-subtitle">Paste a YouTube URL to generate hooks.</p>
+
+    <div class="input-wrap">
+      <input type="text" class="url-input" id="tool-url-input" placeholder="https://www.youtube.com/watch?v=...">
+      <button class="go-btn" id="tool-go-btn" onclick="runTool()">Generate →</button>
+    </div>
+
+    <div class="progress" id="tool-progress">
+      <div class="progress-step"><span class="step-icon">⬇️</span><span class="step-text">Downloading audio...</span></div>
+      <div class="progress-step"><span class="step-icon">🎙️</span><span class="step-text">Transcribing...</span></div>
+      <div class="progress-step"><span class="step-icon">🤖</span><span class="step-text">Generating with Claude AI...</span></div>
+    </div>
+
+    <div id="tool-output"></div>
+  </div>
+</main>
+</div>
+
+<!-- ══════════════════════════════════════════
+     PAGE: PRICING
+══════════════════════════════════════════ -->
+<div class="page" id="page-pricing">
+<div class="pricing-wrap">
+  <h2>Simple pricing</h2>
+  <p>Start free. Upgrade when you need more.</p>
+  <div class="plans-grid">
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price-row"><span class="plan-price-big">$0</span></div>
+      <div class="plan-desc">Perfect for trying it out</div>
+      <ul class="plan-features">
+        <li>1 repurpose per day</li>
+        <li>All 4 content types</li>
+        <li>No signup required</li>
+      </ul>
+      <button class="plan-btn plan-btn-free" onclick="showPage('repurpose', document.querySelector('.page-tab'))">Start for free</button>
+    </div>
+    <div class="plan featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price-row">
+        <span class="old-price">$32</span>
+        <span class="plan-price-big">$19</span>
+        <span class="plan-price-mo">/mo</span>
+      </div>
+      <div class="plan-desc">For serious content creators</div>
+      <ul class="plan-features">
+        <li>Unlimited repurposes</li>
+        <li>All Tools — individual generators</li>
+        <li>Priority processing</li>
+        <li>Cancel anytime</li>
+      </ul>
+      <button class="plan-btn plan-btn-pro" id="pricing-upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UPGRADE MODAL
+══════════════════════════════════════════ -->
+<div class="modal-overlay" id="upgrade-modal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-icon">🔒</div>
+    <h2>You've used your free repurpose today</h2>
+    <p>Upgrade to Pro for unlimited repurposes, all tools, and priority processing.</p>
+    <div class="modal-btns">
+      <button class="modal-btn-primary" onclick="goToCheckout()">Upgrade to Pro — $19/mo →</button>
+      <button class="modal-btn-outline" onclick="openPricingFromModal()">See all plans</button>
+    </div>
+  </div>
+</div>
 
 <script>
+// ── State ──────────────────────────────────────────
 let usageCount = 0;
 const MAX_FREE = 1;
+let currentTool = 'tiktok';
+let cachedToolData = null;
 
-function getProEmail() {
-  return localStorage.getItem('cliply_pro_email') || '';
+function getProEmail() { return localStorage.getItem('cliply_pro_email') || ''; }
+function isPro() { return localStorage.getItem('cliply_pro') === 'true'; }
+
+// ── Page switching ─────────────────────────────────
+function showPage(name, clickedBtn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  // find the tab button by name if not passed
+  if (!clickedBtn || !clickedBtn.classList) {
+    clickedBtn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick').includes("'" + name + "'"));
+  }
+  if (clickedBtn) clickedBtn.classList.add('active');
 }
 
+// ── Upgrade helpers ────────────────────────────────
+async function goToCheckout() {
+  const res = await fetch('/create-checkout-session', {method:'POST'});
+  const data = await res.json();
+  if (data.url) location.href = data.url;
+}
+
+function openModal() { document.getElementById('upgrade-modal').classList.add('show'); }
+function closeModal() { document.getElementById('upgrade-modal').classList.remove('show'); }
+function openPricingFromModal() {
+  closeModal();
+  const pricingBtn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick').includes("'pricing'"));
+  showPage('pricing', pricingBtn);
+}
+
+// ── Repurpose (main tab) ───────────────────────────
 async function repurpose() {
   const url = document.getElementById('url-input').value.trim();
   if (!url) return;
 
-  const isPro = localStorage.getItem('cliply_pro') === 'true';
-  if (!isPro && usageCount >= MAX_FREE) {
-    showError('Daily free limit reached. Upgrade to Pro for unlimited repurposes.');
-    return;
-  }
+  if (!isPro() && usageCount >= MAX_FREE) { openModal(); return; }
 
   const btn = document.getElementById('go-btn');
-  btn.disabled = true;
-  btn.textContent = 'Processing...';
-  hideError();
-  showProgress();
-  hideResult();
+  btn.disabled = true; btn.textContent = 'Processing...';
+  hideResult(); showProgress('progress');
 
   try {
     const body = {url};
-    if (isPro && getProEmail()) body.email = getProEmail();
-
+    if (isPro() && getProEmail()) body.email = getProEmail();
     const res = await fetch('/repurpose', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(body)
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
-
     if (!res.ok) {
       const err = await res.json();
+      if (res.status === 429) { openModal(); return; }
       throw new Error(err.detail || 'Something went wrong');
     }
-
     const data = await res.json();
-    usageCount++;
+    if (!isPro()) usageCount++;
     displayResult(data);
-  } catch (e) {
-    showError(e.message || 'Failed to process video. Please try again.');
+  } catch(e) {
+    if (!e.message.includes('429')) alert(e.message || 'Failed to process. Please try again.');
   } finally {
-    btn.disabled = false;
-    btn.textContent = 'Repurpose →';
-    hideProgress();
+    btn.disabled = false; btn.textContent = 'Repurpose →';
+    hideProgress('progress');
   }
 }
 
 function displayResult(data) {
   document.getElementById('result-title').textContent = `✅ "${data.title}"`;
-
-  // TikTok hooks
+  // TikTok
   const hooksEl = document.getElementById('tiktok-hooks');
   hooksEl.innerHTML = '';
-  (data.content.tiktok_hooks || []).forEach((hook, i) => {
-    hooksEl.innerHTML += `
-      <div class="hook-card">
-        <div class="hook-text">${hook}</div>
-        <button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escapeQuotes(hook)}', this)">Copy</button>
-      </div>`;
+  (data.content.tiktok_hooks || []).forEach(hook => {
+    hooksEl.innerHTML += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">Copy</button></div>`;
   });
-
   // LinkedIn
   const liEl = document.getElementById('linkedin-content');
   liEl.childNodes[0].textContent = data.content.linkedin_post || '';
-
   // Twitter
-  const twEl = document.getElementById('twitter-content');
-  twEl.childNodes[0].textContent = data.content.twitter_thread || '';
-
+  document.getElementById('twitter-content').childNodes[0].textContent = data.content.twitter_thread || '';
   // Newsletter
-  const nlEl = document.getElementById('newsletter-content');
-  nlEl.childNodes[0].textContent = data.content.newsletter || '';
-
+  document.getElementById('newsletter-content').childNodes[0].textContent = data.content.newsletter || '';
   // Transcript
   document.getElementById('transcript-box').textContent = data.transcript || '';
-
   showResult();
 }
 
 function switchTab(name, btn) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  document.getElementById(`tab-${name}`).classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
 }
 
-function copyContent(elementId, btn) {
-  const el = document.getElementById(elementId);
-  const text = el.childNodes[0].textContent;
-  copyText(text, btn);
+// ── Tools tab ─────────────────────────────────────
+const TOOL_META = {
+  tiktok:    {title:'TikTok Hooks',    subtitle:'Paste a YouTube URL to generate viral TikTok hooks.'},
+  linkedin:  {title:'LinkedIn Post',   subtitle:'Paste a YouTube URL to generate a LinkedIn post.'},
+  twitter:   {title:'Twitter Thread',  subtitle:'Paste a YouTube URL to generate a Twitter thread.'},
+  newsletter:{title:'Newsletter',      subtitle:'Paste a YouTube URL to generate a newsletter section.'},
+};
+
+function selectTool(type) {
+  currentTool = type;
+  cachedToolData = null;
+  document.getElementById('tool-output').innerHTML = '';
+  document.getElementById('tool-url-input').value = '';
+  document.getElementById('tool-title').textContent = TOOL_META[type].title;
+  document.getElementById('tool-subtitle').textContent = TOOL_META[type].subtitle;
+  document.getElementById('tools-select').style.display = 'none';
+  document.getElementById('tool-result').classList.add('show');
 }
 
+function backToTools() {
+  document.getElementById('tools-select').style.display = '';
+  document.getElementById('tool-result').classList.remove('show');
+  document.getElementById('tool-output').innerHTML = '';
+}
+
+async function runTool() {
+  const url = document.getElementById('tool-url-input').value.trim();
+  if (!url) return;
+
+  if (!isPro() && usageCount >= MAX_FREE) { openModal(); return; }
+
+  const btn = document.getElementById('tool-go-btn');
+  btn.disabled = true; btn.textContent = 'Processing...';
+  document.getElementById('tool-output').innerHTML = '';
+  showProgress('tool-progress');
+
+  try {
+    const body = {url};
+    if (isPro() && getProEmail()) body.email = getProEmail();
+    const res = await fetch('/repurpose', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      if (res.status === 429) { openModal(); return; }
+      throw new Error(err.detail || 'Something went wrong');
+    }
+    const data = await res.json();
+    cachedToolData = data;
+    if (!isPro()) usageCount++;
+    renderToolOutput(data, currentTool);
+  } catch(e) {
+    if (!e.message.includes('429')) {
+      document.getElementById('tool-output').innerHTML = `<div style="color:#dc2626;font-size:.9rem;padding:1rem;background:#fff5f5;border:1px solid #fca5a5;border-radius:10px">${e.message}</div>`;
+    }
+  } finally {
+    btn.disabled = false; btn.textContent = 'Generate →';
+    hideProgress('tool-progress');
+  }
+}
+
+function renderToolOutput(data, type) {
+  const out = document.getElementById('tool-output');
+  if (type === 'tiktok') {
+    let html = `<div style="font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:1rem">✅ "${data.title}"</div>`;
+    (data.content.tiktok_hooks || []).forEach(hook => {
+      html += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">Copy</button></div>`;
+    });
+    out.innerHTML = html;
+  } else {
+    const textMap = {linkedin: data.content.linkedin_post, twitter: data.content.twitter_thread, newsletter: data.content.newsletter};
+    const txt = textMap[type] || '';
+    out.innerHTML = `
+      <div style="font-size:.85rem;font-weight:700;color:var(--muted);margin-bottom:1rem">✅ "${data.title}"</div>
+      <div class="content-box" id="tool-content-box">${txt}<button class="copy-btn" onclick="copyText(document.getElementById('tool-content-box').childNodes[0].textContent,this)">Copy</button></div>`;
+    out.querySelector('#tool-content-box').childNodes[0].textContent = txt;
+  }
+}
+
+// ── Helpers ───────────────────────────────────────
+function copyContent(elId, btn) { copyText(document.getElementById(elId).childNodes[0].textContent, btn); }
 function copyText(text, btn) {
   navigator.clipboard.writeText(text);
   const orig = btn.textContent;
-  btn.textContent = 'Copied!';
-  btn.classList.add('copied');
+  btn.textContent = 'Copied!'; btn.classList.add('copied');
   setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
 }
-
-function escapeQuotes(str) {
-  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
-}
-
-function toggleTranscript() {
-  document.getElementById('transcript-box').classList.toggle('show');
-}
-
-function showProgress() { document.getElementById('progress').classList.add('show'); }
-function hideProgress() { document.getElementById('progress').classList.remove('show'); }
+function escQ(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
+function toggleTranscript() { document.getElementById('transcript-box').classList.toggle('show'); }
 function showResult() { document.getElementById('result').classList.add('show'); }
 function hideResult() { document.getElementById('result').classList.remove('show'); }
-function showError(msg) { const e = document.getElementById('error-box'); e.textContent = msg; e.classList.add('show'); }
-function hideError() { document.getElementById('error-box').classList.remove('show'); }
+function showProgress(id) { document.getElementById(id).classList.add('show'); }
+function hideProgress(id) { document.getElementById(id).classList.remove('show'); }
 
-// Enter key
-document.getElementById('url-input').addEventListener('keydown', e => { if (e.key === 'Enter') repurpose(); });
+// ── Enter key ──────────────────────────────────────
+document.getElementById('url-input').addEventListener('keydown', e => { if(e.key==='Enter') repurpose(); });
+document.getElementById('tool-url-input').addEventListener('keydown', e => { if(e.key==='Enter') runTool(); });
 
-// Upgrade button
-document.getElementById('upgrade-btn').addEventListener('click', async () => {
-  const res = await fetch('/create-checkout-session', {method:'POST'});
-  const data = await res.json();
-  if (data.url) location.href = data.url;
-});
-
-// Check pro status on load
+// ── Pro status on load ─────────────────────────────
 (async () => {
   const email = getProEmail();
   if (email) {
     try {
       const res = await fetch('/verify-subscription', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({email})
+        method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email})
       });
       const data = await res.json();
       if (data.pro) {
         localStorage.setItem('cliply_pro', 'true');
-        document.getElementById('usage-text').textContent = 'Pro — Unlimited';
-        document.getElementById('upgrade-btn').textContent = '✓ Pro';
-        document.getElementById('upgrade-btn').style.background = '#10b981';
-        document.getElementById('upgrade-btn').style.cursor = 'default';
-        document.getElementById('upgrade-btn').onclick = null;
+        setProUI();
       } else {
-        // subscription may have expired
         localStorage.removeItem('cliply_pro');
         localStorage.removeItem('cliply_pro_email');
       }
     } catch {}
-  } else if (localStorage.getItem('cliply_pro') === 'true') {
-    document.getElementById('usage-text').textContent = 'Pro — Unlimited';
-    document.getElementById('upgrade-btn').textContent = '✓ Pro';
-    document.getElementById('upgrade-btn').style.background = '#10b981';
+  } else if (isPro()) {
+    setProUI();
   }
 })();
+
+function setProUI() {
+  document.getElementById('usage-text').textContent = 'Pro — Unlimited';
+  const btn = document.getElementById('upgrade-btn');
+  btn.textContent = '✓ Pro';
+  btn.style.background = '#10b981';
+  btn.style.cursor = 'default';
+  btn.onclick = null;
+  // Pricing tab — hide upgrade btn, show active badge
+  const pricingBtn = document.getElementById('pricing-upgrade-btn');
+  if (pricingBtn) {
+    pricingBtn.outerHTML = '<div class="pro-active-badge">✓ You\'re on Pro</div>';
+  }
+}
 </script>
 </body>
 </html>
