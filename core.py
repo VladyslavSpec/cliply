@@ -8,6 +8,7 @@ import yt_dlp
 import whisper
 import anthropic
 from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, TranscriptsDisabled
+_ytt = YouTubeTranscriptApi()
 
 
 def _extract_video_id(url: str) -> str:
@@ -36,12 +37,10 @@ def get_transcript_fast(url: str) -> tuple[str, str]:
 
     try:
         # Try English first
-        transcript_list = YouTubeTranscriptApi.get_transcript(
-            video_id, languages=["en", "en-US", "en-GB", "a.en"]
-        )
+        transcript_list = _ytt.fetch(video_id, languages=["en", "en-US", "en-GB", "a.en"])
     except (NoTranscriptFound, TranscriptsDisabled):
         # Try any available language
-        all_transcripts = YouTubeTranscriptApi.list_transcripts(video_id)
+        all_transcripts = _ytt.list(video_id)
         transcript_obj = next(iter(all_transcripts), None)
         if transcript_obj is None:
             raise NoTranscriptFound(video_id, ["any"], {})
