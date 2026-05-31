@@ -7,8 +7,7 @@ from datetime import date
 import os
 import asyncio
 import stripe
-from core import download_audio, transcribe, generate_content
-import tempfile
+from core import get_transcript, generate_content
 
 stripe.api_key = os.environ.get("STRIPE_SECRET_KEY", "")
 STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID", "")
@@ -75,10 +74,8 @@ async def repurpose(body: RepurposeRequest, req: Request):
         raise HTTPException(status_code=500, detail="API key not configured")
 
     try:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            audio_path, title = await asyncio.to_thread(download_audio, body.url, tmp_dir)
-            transcript = await asyncio.to_thread(transcribe, audio_path)
-            content = await asyncio.to_thread(generate_content, transcript, api_key)
+        transcript, title = await asyncio.to_thread(get_transcript, body.url)
+        content = await asyncio.to_thread(generate_content, transcript, api_key)
 
         if not is_pro:
             request_counts[ip][today] += 1
