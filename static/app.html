@@ -19,8 +19,10 @@ body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-h
 /* ── NAV ── */
 nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50}
 .logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--text)}
-.back-btn{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);color:var(--muted);font-size:1.1rem;text-decoration:none;transition:all .2s;background:white}
-.back-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light)}
+.nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;font-weight:500}
+.nav-links a{color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links .nav-active{color:var(--accent);font-weight:700}
 .logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}
 .nav-right{display:flex;align-items:center;gap:0.75rem}
 .usage-badge{font-size:0.8rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:100px}
@@ -119,9 +121,11 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 
 <!-- NAV -->
 <nav>
-  <div style="display:flex;align-items:center;gap:0.75rem">
-    <a href="/" class="back-btn" title="Back to home">←</a>
-    <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
+  <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
+  <div class="nav-links">
+    <a href="/#how">How it works</a>
+    <a href="/app" class="nav-active">Create</a>
+    <a href="/static/plans.html">Pricing</a>
   </div>
   <div class="nav-right">
     <span class="usage-badge" id="usage-text">1 free / day</span>
