@@ -514,6 +514,12 @@ function hideResult() { document.getElementById('result').classList.remove('show
 function showProgress(id) { document.getElementById(id).classList.add('show'); }
 function hideProgress(id) { document.getElementById(id).classList.remove('show'); }
 
+// ── Open tab from URL hash ────────────────────────
+if (location.hash === '#pricing') {
+  const btn = [...document.querySelectorAll('.page-tab')].find(b => b.getAttribute('onclick').includes("'pricing'"));
+  showPage('pricing', btn);
+}
+
 // ── Enter key ──────────────────────────────────────
 document.getElementById('url-input').addEventListener('keydown', e => { if(e.key==='Enter') repurpose(); });
 document.getElementById('tool-url-input').addEventListener('keydown', e => { if(e.key==='Enter') runTool(); });
