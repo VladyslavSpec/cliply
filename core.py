@@ -2,6 +2,8 @@ import os
 import re
 import json
 import tempfile
+import urllib.request
+import urllib.parse
 import yt_dlp
 import whisper
 import anthropic
@@ -9,29 +11,28 @@ from youtube_transcript_api import YouTubeTranscriptApi, NoTranscriptFound, Tran
 
 
 def _extract_video_id(url: str) -> str:
-    patterns = [
-        r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})",
-    ]
-    for p in patterns:
+    for p in [r"(?:v=|youtu\.be/|embed/|shorts/)([A-Za-z0-9_-]{11})"]:
         m = re.search(p, url)
         if m:
             return m.group(1)
     raise ValueError("Cannot extract video ID from URL")
 
 
+def _get_title_oembed(url: str) -> str:
+    """Fetch video title via YouTube oEmbed — no auth, no bot detection."""
+    try:
+        oembed_url = f"https://www.youtube.com/oembed?url={urllib.parse.quote(url)}&format=json"
+        with urllib.request.urlopen(oembed_url, timeout=5) as r:
+            data = json.loads(r.read())
+            return data.get("title", "Unknown")
+    except Exception:
+        return "Unknown"
+
+
 def get_transcript_fast(url: str) -> tuple[str, str]:
-    """Try YouTube's own captions first — fast and bot-proof."""
+    """YouTube captions + oEmbed title — fully bot-proof, no yt-dlp."""
     video_id = _extract_video_id(url)
-
-    # Get title via yt-dlp without downloading
-    ydl_opts = {"quiet": True, "no_warnings": True, "skip_download": True}
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        try:
-            info = ydl.extract_info(url, download=False)
-            title = info.get("title", "Unknown")
-        except Exception:
-            title = "Unknown"
-
+    title = _get_title_oembed(url)
     transcript_list = YouTubeTranscriptApi.get_transcript(
         video_id, languages=["en", "en-US", "en-GB", "a.en"]
     )
