@@ -116,8 +116,8 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
 .how-inner{max-width:1100px;margin:0 auto}
 .how-row{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:2rem 0 1rem;border-bottom:none}
 .how-row:last-child{border-bottom:none}
-.step-connector{display:flex;justify-content:center;margin:-0.25rem 0;position:relative;z-index:1}
-.connector-arrow{width:200px;height:80px;overflow:visible}
+.step-connector{display:flex;justify-content:center;margin:0.25rem 0;position:relative;z-index:1;width:100%}
+.connector-arrow{width:82%;max-width:900px;height:120px;overflow:visible}
 .sketch-svg path,.sketch-svg rect,.sketch-svg line,.sketch-svg circle,.sketch-svg polyline,.sketch-svg polygon{stroke-width:3!important}
 .how-step-num{font-size:2.5rem;font-weight:900;color:var(--accent);opacity:.12;line-height:1;margin-bottom:0.4rem;letter-spacing:-0.04em}
 .how-text h3{font-size:1.4rem;font-weight:800;margin-bottom:0.6rem;letter-spacing:-0.02em}
@@ -276,11 +276,11 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
       </div>
     </div>
 
-    <!-- Arrow 1→2 (curves right, matching checkerboard flow) -->
+    <!-- Arrow 1→2: from step 1 title (right col) to step 2 title (left col) -->
     <div class="step-connector">
-      <svg class="connector-arrow" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
-        <path d="M 65 8 C 65 44, 135 44, 135 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
-        <polyline points="124,62 135,74 146,62" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <svg class="connector-arrow" viewBox="0 0 700 120" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
+        <path d="M 530 10 C 510 52, 380 58, 350 68 S 196 104, 172 114" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <polyline points="160,104 172,116 184,104" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
     </div>
 
@@ -313,11 +313,11 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
       </div>
     </div>
 
-    <!-- Arrow 2→3 (curves left, mirroring back) -->
+    <!-- Arrow 2→3: from step 2 title (left col) to step 3 title (right col) -->
     <div class="step-connector">
-      <svg class="connector-arrow" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
-        <path d="M 135 8 C 135 44, 65 44, 65 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
-        <polyline points="54,62 65,74 76,62" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <svg class="connector-arrow" viewBox="0 0 700 120" fill="none" xmlns="http://www.w3.org/2000/svg" filter="url(#sketch-filter)">
+        <path d="M 172 10 C 192 52, 322 58, 350 68 S 506 104, 528 114" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" fill="none"/>
+        <polyline points="516,104 528,116 540,104" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
     </div>
 
