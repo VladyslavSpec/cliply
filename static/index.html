@@ -30,8 +30,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2
 .nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;font-weight:500}
 .nav-links a{color:var(--muted);transition:color .2s}
 .nav-links a:hover{color:var(--text)}
-.nav-links .btn-primary{color:white!important;background:var(--accent);padding:0.6rem 1.25rem;border-radius:var(--radius);font-weight:600;font-size:0.9rem}
-.nav-links .btn-primary:hover{background:var(--accent-dark);color:white!important;transform:translateY(-1px)}
+.nav-links .btn-primary{color:white!important;background:var(--accent);padding:0.6rem 1.25rem;border-radius:var(--radius);font-weight:600;font-size:0.9rem;box-shadow:0 0 0 6px rgba(255,107,107,0.15)}
+.nav-links .btn-primary:hover{background:var(--accent-dark);color:white!important;transform:translateY(-1px);box-shadow:0 0 0 8px rgba(255,107,107,0.2)}
 .nav-right{display:flex;align-items:center;gap:1rem}
 .lang-switcher{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2px}
 .lang-btn{background:none;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;color:var(--muted);transition:all .2s;font-family:'Inter',sans-serif}
@@ -190,7 +190,7 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
   </a>
   <div class="nav-links">
     <a href="#how" data-i18n="nav.how">How it works</a>
-    <a href="/app" class="btn-primary" data-i18n="nav.create">Create →</a>
+    <a href="/app" class="btn-primary" data-i18n="nav.create">Create</a>
     <a href="/static/plans.html" data-i18n="nav.pricing">Pricing</a>
   </div>
   <div class="nav-right">
