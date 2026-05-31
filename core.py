@@ -37,13 +37,20 @@ def get_transcript(url: str) -> tuple[str, str]:
 
     # Get transcript
     req_url = f"https://api.supadata.ai/v1/youtube/transcript?url={urllib.parse.quote(url)}&text=true"
-    request = urllib.request.Request(req_url, headers={"x-api-key": api_key})
-    with urllib.request.urlopen(request, timeout=30) as r:
-        data = json.loads(r.read())
+    request = urllib.request.Request(req_url, headers={
+        "x-api-key": api_key,
+        "Authorization": f"Bearer {api_key}",
+    })
+    try:
+        with urllib.request.urlopen(request, timeout=30) as r:
+            data = json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        body = e.read().decode("utf-8", errors="ignore")
+        raise ValueError(f"Supadata error {e.code}: {body}")
 
-    content = data.get("content", "")
+    content = data.get("content", "") or data.get("transcript", "") or data.get("text", "")
     if not content:
-        raise ValueError("No transcript available for this video.")
+        raise ValueError(f"No transcript returned. Response: {data}")
 
     return content, title
 
