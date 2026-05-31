@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans — Cliply</title>
+<link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--accent:#FF6B6B;--accent-dark:#e85555;--accent-light:#fff0f0;--text:#1A1A2E;--muted:#6B7280;--bg:#FFFFFF;--surface:#F9FAFB;--border:#D1D5DB;--radius:12px}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
+a{text-decoration:none;color:inherit}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50}
+.logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:6px;color:var(--text)}
+.logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}
+.nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;font-weight:500}
+.nav-links a{color:var(--muted);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a.active{color:var(--accent)}
+.btn-try{background:var(--accent);color:white;padding:0.5rem 1.1rem;border-radius:8px;font-weight:600;font-size:0.88rem;transition:background .2s}
+.btn-try:hover{background:var(--accent-dark)}
+
+.wrap{max-width:700px;margin:0 auto;padding:3.5rem 2rem 5rem}
+.page-tag{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:0.6rem}
+h1{font-size:2rem;font-weight:900;letter-spacing:-0.03em;margin-bottom:0.5rem}
+.sub{color:var(--muted);font-size:1rem;margin-bottom:2.5rem}
+
+.plans-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+.plan{background:var(--surface);border:1.5px solid var(--border);border-radius:18px;padding:2rem}
+.plan.featured{border-color:var(--accent);background:white;box-shadow:0 0 0 4px var(--accent-light)}
+.plan-name{font-size:0.78rem;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:var(--muted);margin-bottom:0.6rem}
+.plan.featured .plan-name{color:var(--accent)}
+.plan-price-row{display:flex;align-items:baseline;gap:6px;margin-bottom:0.3rem;flex-wrap:wrap}
+.plan-price-big{font-size:2.5rem;font-weight:900;letter-spacing:-0.03em}
+.plan-price-mo{font-size:1rem;font-weight:500;color:var(--muted)}
+.old-price{font-size:1.6rem;text-decoration:line-through;color:#9CA3AF;font-weight:700}
+.plan-desc{font-size:0.88rem;color:var(--muted);margin-bottom:1.5rem}
+.plan-features{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.75rem}
+.plan-features li{font-size:0.88rem;display:flex;align-items:center;gap:0.5rem}
+.plan-features li::before{content:'✓';color:var(--accent);font-weight:700;flex-shrink:0}
+.plan-btn{width:100%;padding:0.8rem;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;border:none;transition:all .2s;font-family:'Inter',sans-serif}
+.plan-btn-free{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
+.plan-btn-free:hover{border-color:var(--accent);color:var(--accent)}
+.plan-btn-pro{background:var(--accent);color:white}
+.plan-btn-pro:hover{background:var(--accent-dark)}
+.pro-active-badge{width:100%;padding:0.8rem;border-radius:10px;font-weight:600;font-size:0.9rem;text-align:center;background:#f0fdf4;color:#10b981;border:1.5px solid #10b981}
+
+.faq{margin-top:3rem}
+.faq h2{font-size:1.1rem;font-weight:800;margin-bottom:1.25rem}
+.faq-item{border-bottom:1px solid var(--border);padding:1rem 0}
+.faq-item:last-child{border-bottom:none}
+.faq-q{font-size:0.92rem;font-weight:600;margin-bottom:0.4rem}
+.faq-a{font-size:0.88rem;color:var(--muted);line-height:1.6}
+
+footer{border-top:1px solid var(--border);padding:1.25rem 2rem;text-align:center;font-size:0.82rem;color:var(--muted)}
+footer a{color:var(--muted)}
+footer a:hover{color:var(--text)}
+
+@media(max-width:600px){
+  nav{padding:0.75rem 1.25rem}
+  .nav-links{display:none}
+  .wrap{padding:2rem 1.25rem 4rem}
+  h1{font-size:1.6rem}
+  .plans-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
+  <div class="nav-links">
+    <a href="/#how">How it works</a>
+    <a href="/app">Create</a>
+    <a href="/static/plans.html" class="active">Plans</a>
+  </div>
+  <a href="/app" class="btn-try">Try Free →</a>
+</nav>
+
+<div class="wrap">
+  <div class="page-tag">Pricing</div>
+  <h1>Simple plans</h1>
+  <p class="sub">Start free. Upgrade when you're ready to scale.</p>
+
+  <div class="plans-grid">
+    <!-- FREE -->
+    <div class="plan">
+      <div class="plan-name">Free</div>
+      <div class="plan-price-row"><span class="plan-price-big">$0</span></div>
+      <div class="plan-desc">Perfect for trying it out</div>
+      <ul class="plan-features">
+        <li>1 repurpose per day</li>
+        <li>All 4 content types</li>
+        <li>Quick Tools access</li>
+        <li>No signup required</li>
+      </ul>
+      <button class="plan-btn plan-btn-free" onclick="location.href='/app'">Start for free</button>
+    </div>
+
+    <!-- PRO -->
+    <div class="plan featured">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price-row">
+        <span class="old-price">$31.99</span>
+        <span class="plan-price-big">$19</span>
+        <span class="plan-price-mo">/mo</span>
+      </div>
+      <div class="plan-desc">For serious content creators</div>
+      <ul class="plan-features">
+        <li>Unlimited repurposes</li>
+        <li>All Quick Tools — unlimited</li>
+        <li>Priority processing</li>
+        <li>Cancel anytime</li>
+      </ul>
+      <button class="plan-btn plan-btn-pro" id="upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h2>Common questions</h2>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel anytime?</div>
+      <div class="faq-a">Yes. Cancel anytime from your Stripe billing portal — no questions asked. You keep access until the end of your billing period.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What counts as one repurpose?</div>
+      <div class="faq-a">One repurpose = one YouTube URL processed. You get all 4 content types (TikTok hooks, LinkedIn post, Twitter thread, newsletter) from a single repurpose.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do Quick Tools count separately?</div>
+      <div class="faq-a">Quick Tools use the same daily limit as regular repurposes on the free plan. Pro users have unlimited access to everything.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Is there a free trial for Pro?</div>
+      <div class="faq-a">The free plan lets you try the full product with 1 repurpose per day — no time limit. Upgrade to Pro when you need more.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  © 2026 Cliply · <a href="/static/privacy.html">Privacy</a> · <a href="/static/terms.html">Terms</a> · <a href="mailto:support@cliply.app">Contact</a>
+</footer>
+
+<script>
+async function goToCheckout() {
+  const res = await fetch('/create-checkout-session', {method:'POST'});
+  const data = await res.json();
+  if (data.url) location.href = data.url;
+}
+
+// Show "You're on Pro" if already subscribed
+if (localStorage.getItem('cliply_pro') === 'true') {
+  const btn = document.getElementById('upgrade-btn');
+  if (btn) btn.outerHTML = '<div class="pro-active-badge">✓ You\'re on Pro</div>';
+}
+</script>
+</body>
+</html>
