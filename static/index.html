@@ -159,13 +159,16 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
 
   /* How it works */
   .how-section{padding:2rem 1.25rem}
-  .how-row{grid-template-columns:1fr;gap:1rem;padding:1.25rem 0}
-  .step-connector{transform:rotate(90deg)}
+  .how-row{grid-template-columns:1fr;gap:1.25rem;padding:1.5rem 0}
+  .step-connector{transform:none;display:flex;flex-direction:column;align-items:center;margin:0.25rem 0}
+  .connector-arrow{display:none}
+  .mobile-arrow-down{display:flex!important}
   .how-row-reverse .how-sketch{order:0}
   .how-row-reverse .how-text{order:0}
   .how-step-num{font-size:2rem}
   .how-text h3{font-size:1.25rem}
-  .sketch-svg{max-width:240px}
+  .sketch-svg{max-width:260px;filter:none!important}
+  .how-sketch{margin-bottom:0.25rem}
 
   /* What you get */
   .output-section{padding:2rem 1.25rem}
@@ -284,6 +287,10 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
         <path d="M 385 14 C 385 68, 35 22, 35 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
         <polyline points="22,60 35,74 48,60" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
+      <svg class="mobile-arrow-down" viewBox="0 0 40 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;width:40px;height:56px;flex-shrink:0">
+        <line x1="20" y1="4" x2="20" y2="44" stroke="#FF6B6B" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="12,36 20,50 28,36" stroke="#FF6B6B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
     </div>
 
     <!-- Step 2 (reversed) -->
@@ -320,6 +327,10 @@ footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
       <svg class="connector-arrow" viewBox="0 0 420 90" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M 35 14 C 35 68, 385 22, 385 72" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round"/>
         <polyline points="372,60 385,74 398,60" stroke="#FF6B6B" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <svg class="mobile-arrow-down" viewBox="0 0 40 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none;width:40px;height:56px;flex-shrink:0">
+        <line x1="20" y1="4" x2="20" y2="44" stroke="#FF6B6B" stroke-width="2.5" stroke-linecap="round"/>
+        <polyline points="12,36 20,50 28,36" stroke="#FF6B6B" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
     </div>
 
