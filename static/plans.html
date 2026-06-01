@@ -13,15 +13,19 @@
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
 a{text-decoration:none;color:inherit}
 
-nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50;gap:1rem}
 .logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:6px;color:var(--text)}
 .logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}
 .nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;font-weight:500}
 .nav-links a{color:var(--muted);transition:color .2s}
 .nav-links a:hover{color:var(--text)}
 .nav-links a.active{color:var(--accent)}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
 .btn-try{background:var(--accent);color:white;padding:0.5rem 1.1rem;border-radius:8px;font-weight:600;font-size:0.88rem;transition:background .2s}
 .btn-try:hover{background:var(--accent-dark)}
+.lang-switcher{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2px}
+.lang-btn{background:none;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;color:var(--muted);transition:all .2s;font-family:'Inter',sans-serif}
+.lang-btn.active{background:white;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
 
 .wrap{max-width:700px;margin:0 auto;padding:3.5rem 2rem 5rem}
 .page-tag{font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);margin-bottom:0.6rem}
@@ -73,88 +77,171 @@ footer a:hover{color:var(--text)}
 <nav>
   <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
   <div class="nav-links">
-    <a href="/#how">How it works</a>
-    <a href="/app">Create</a>
-    <a href="/static/plans.html" class="active">Plans</a>
+    <a href="/#how" data-i18n="nav.how">How it works</a>
+    <a href="/app" data-i18n="nav.create">Create</a>
+    <a href="/static/plans.html" class="active" data-i18n="nav.pricing">Pricing</a>
   </div>
-  <a href="/app" class="btn-try">Try Free →</a>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    </div>
+    <a href="/app" class="btn-try" data-i18n="nav.cta">Try Free →</a>
+  </div>
 </nav>
 
 <div class="wrap">
-  <div class="page-tag">Pricing</div>
-  <h1>Simple plans</h1>
-  <p class="sub">Start free. Upgrade when you're ready to scale.</p>
+  <div class="page-tag" data-i18n="plans.tag">Pricing</div>
+  <h1 data-i18n="plans.title">Simple plans</h1>
+  <p class="sub" data-i18n="plans.sub">Start free. Upgrade when you're ready to scale.</p>
 
   <div class="plans-grid">
     <!-- FREE -->
     <div class="plan">
-      <div class="plan-name">Free</div>
+      <div class="plan-name" data-i18n="free.name">Free</div>
       <div class="plan-price-row"><span class="plan-price-big">$0</span></div>
-      <div class="plan-desc">Perfect for trying it out</div>
+      <div class="plan-desc" data-i18n="free.desc">Perfect for trying it out</div>
       <ul class="plan-features">
-        <li>1 repurpose per day</li>
-        <li>All 4 content types</li>
-        <li>Quick Tools access</li>
-        <li>No signup required</li>
+        <li data-i18n="free.f1">1 repurpose per day</li>
+        <li data-i18n="free.f2">All 4 content types</li>
+        <li data-i18n="free.f3">Quick Tools access</li>
+        <li data-i18n="free.f4">No signup required</li>
       </ul>
-      <button class="plan-btn plan-btn-free" onclick="location.href='/app'">Start for free</button>
+      <button class="plan-btn plan-btn-free" onclick="location.href='/app'" data-i18n="free.btn">Start for free</button>
     </div>
 
     <!-- PRO -->
     <div class="plan featured">
-      <div class="plan-name">Pro</div>
+      <div class="plan-name" data-i18n="pro.name">Pro</div>
       <div class="plan-price-row">
         <span class="old-price">$31.99</span>
         <span class="plan-price-big">$19</span>
-        <span class="plan-price-mo">/mo</span>
+        <span class="plan-price-mo" data-i18n="plans.per.mo">/mo</span>
       </div>
-      <div class="plan-desc">For serious content creators</div>
+      <div class="plan-desc" data-i18n="pro.desc">For serious content creators</div>
       <ul class="plan-features">
-        <li>Unlimited repurposes</li>
-        <li>All Quick Tools — unlimited</li>
-        <li>Priority processing</li>
-        <li>Cancel anytime</li>
+        <li data-i18n="pro.f1">Unlimited repurposes</li>
+        <li data-i18n="pro.f2">All Quick Tools — unlimited</li>
+        <li data-i18n="pro.f3">Priority processing</li>
+        <li data-i18n="pro.f4">Cancel anytime</li>
       </ul>
-      <button class="plan-btn plan-btn-pro" id="upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
+      <button class="plan-btn plan-btn-pro" id="upgrade-btn" onclick="goToCheckout()" data-i18n="pro.btn">Upgrade to Pro →</button>
     </div>
   </div>
 
   <div class="faq">
-    <h2>Common questions</h2>
+    <h2 data-i18n="faq.title">Common questions</h2>
     <div class="faq-item">
-      <div class="faq-q">Can I cancel anytime?</div>
-      <div class="faq-a">Yes. Cancel anytime from your Stripe billing portal — no questions asked. You keep access until the end of your billing period.</div>
+      <div class="faq-q" data-i18n="faq.q1">Can I cancel anytime?</div>
+      <div class="faq-a" data-i18n="faq.a1">Yes. Cancel anytime from your Stripe billing portal — no questions asked. You keep access until the end of your billing period.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">What counts as one repurpose?</div>
-      <div class="faq-a">One repurpose = one YouTube URL processed. You get all 4 content types (TikTok hooks, LinkedIn post, Twitter thread, newsletter) from a single repurpose.</div>
+      <div class="faq-q" data-i18n="faq.q2">What counts as one repurpose?</div>
+      <div class="faq-a" data-i18n="faq.a2">One repurpose = one YouTube URL processed. You get all 4 content types (TikTok hooks, LinkedIn post, Twitter thread, newsletter) from a single repurpose.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Do Quick Tools count separately?</div>
-      <div class="faq-a">Quick Tools use the same daily limit as regular repurposes on the free plan. Pro users have unlimited access to everything.</div>
+      <div class="faq-q" data-i18n="faq.q3">Do Quick Tools count separately?</div>
+      <div class="faq-a" data-i18n="faq.a3">Quick Tools use the same daily limit as regular repurposes on the free plan. Pro users have unlimited access to everything.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Is there a free trial for Pro?</div>
-      <div class="faq-a">The free plan lets you try the full product with 1 repurpose per day — no time limit. Upgrade to Pro when you need more.</div>
+      <div class="faq-q" data-i18n="faq.q4">Is there a free trial for Pro?</div>
+      <div class="faq-a" data-i18n="faq.a4">The free plan lets you try the full product with 1 repurpose per day — no time limit. Upgrade to Pro when you need more.</div>
     </div>
   </div>
 </div>
 
 <footer>
-  © 2026 Cliply · <a href="/static/privacy.html">Privacy</a> · <a href="/static/terms.html">Terms</a> · <a href="mailto:support@cliply.app">Contact</a>
+  © 2026 Cliply · <a href="/static/privacy.html" data-i18n="footer.privacy">Privacy</a> · <a href="/static/terms.html" data-i18n="footer.terms">Terms</a> · <a href="mailto:support@cliply.app" data-i18n="footer.contact">Contact</a>
 </footer>
 
 <script>
+const i18n = {
+  en: {
+    "nav.how":"How it works","nav.create":"Create","nav.pricing":"Pricing","nav.cta":"Try Free →",
+    "plans.tag":"Pricing","plans.title":"Simple plans","plans.sub":"Start free. Upgrade when you're ready to scale.","plans.per.mo":"/mo",
+    "free.name":"Free","free.desc":"Perfect for trying it out",
+    "free.f1":"1 repurpose per day","free.f2":"All 4 content types","free.f3":"Quick Tools access","free.f4":"No signup required",
+    "free.btn":"Start for free",
+    "pro.name":"Pro","pro.desc":"For serious content creators",
+    "pro.f1":"Unlimited repurposes","pro.f2":"All Quick Tools — unlimited","pro.f3":"Priority processing","pro.f4":"Cancel anytime",
+    "pro.btn":"Upgrade to Pro →","pro.active":"✓ You're on Pro",
+    "faq.title":"Common questions",
+    "faq.q1":"Can I cancel anytime?","faq.a1":"Yes. Cancel anytime from your Stripe billing portal — no questions asked. You keep access until the end of your billing period.",
+    "faq.q2":"What counts as one repurpose?","faq.a2":"One repurpose = one YouTube URL processed. You get all 4 content types (TikTok hooks, LinkedIn post, Twitter thread, newsletter) from a single repurpose.",
+    "faq.q3":"Do Quick Tools count separately?","faq.a3":"Quick Tools use the same daily limit as regular repurposes on the free plan. Pro users have unlimited access to everything.",
+    "faq.q4":"Is there a free trial for Pro?","faq.a4":"The free plan lets you try the full product with 1 repurpose per day — no time limit. Upgrade to Pro when you need more.",
+    "footer.privacy":"Privacy","footer.terms":"Terms","footer.contact":"Contact"
+  },
+  es: {
+    "nav.how":"Cómo funciona","nav.create":"Crear","nav.pricing":"Precios","nav.cta":"Prueba gratis →",
+    "plans.tag":"Precios","plans.title":"Planes simples","plans.sub":"Empieza gratis. Mejora cuando estés listo.","plans.per.mo":"/mes",
+    "free.name":"Gratis","free.desc":"Perfecto para probar",
+    "free.f1":"1 repurpose por día","free.f2":"Los 4 tipos de contenido","free.f3":"Acceso a herramientas","free.f4":"Sin registro",
+    "free.btn":"Comenzar gratis",
+    "pro.name":"Pro","pro.desc":"Para creadores serios",
+    "pro.f1":"Repurposes ilimitados","pro.f2":"Todas las herramientas — ilimitado","pro.f3":"Procesamiento prioritario","pro.f4":"Cancela cuando quieras",
+    "pro.btn":"Mejorar a Pro →","pro.active":"✓ Eres Pro",
+    "faq.title":"Preguntas frecuentes",
+    "faq.q1":"¿Puedo cancelar en cualquier momento?","faq.a1":"Sí. Cancela cuando quieras desde tu portal de Stripe — sin preguntas. Conservas el acceso hasta el final de tu período.",
+    "faq.q2":"¿Qué cuenta como un repurpose?","faq.a2":"Un repurpose = una URL de YouTube procesada. Obtienes los 4 tipos de contenido de un solo repurpose.",
+    "faq.q3":"¿Las herramientas rápidas cuentan por separado?","faq.a3":"Las herramientas usan el mismo límite diario en el plan gratis. Los usuarios Pro tienen acceso ilimitado a todo.",
+    "faq.q4":"¿Hay prueba gratuita del Pro?","faq.a4":"El plan gratuito te permite probar el producto completo con 1 repurpose por día — sin límite de tiempo.",
+    "footer.privacy":"Privacidad","footer.terms":"Términos","footer.contact":"Contacto"
+  },
+  ru: {
+    "nav.how":"Как работает","nav.create":"Создать","nav.pricing":"Цены","nav.cta":"Попробовать →",
+    "plans.tag":"Тарифы","plans.title":"Простые тарифы","plans.sub":"Начни бесплатно. Переходи на Pro когда нужно больше.","plans.per.mo":"/мес",
+    "free.name":"Бесплатно","free.desc":"Идеально для теста",
+    "free.f1":"1 обработка в день","free.f2":"Все 4 типа контента","free.f3":"Доступ к инструментам","free.f4":"Без регистрации",
+    "free.btn":"Начать бесплатно",
+    "pro.name":"Pro","pro.desc":"Для серьёзных создателей",
+    "pro.f1":"Безлимитная обработка","pro.f2":"Все инструменты — безлимит","pro.f3":"Приоритетная обработка","pro.f4":"Отмена в любое время",
+    "pro.btn":"Перейти на Pro →","pro.active":"✓ Вы на Pro",
+    "faq.title":"Частые вопросы",
+    "faq.q1":"Можно ли отменить в любое время?","faq.a1":"Да. Отмените в любое время через портал Stripe — без вопросов. Доступ сохраняется до конца оплаченного периода.",
+    "faq.q2":"Что считается одной обработкой?","faq.a2":"Одна обработка = один YouTube URL. Вы получаете все 4 типа контента (хуки TikTok, LinkedIn пост, Twitter тред, newsletter) за одну обработку.",
+    "faq.q3":"Быстрые инструменты считаются отдельно?","faq.a3":"Инструменты используют тот же дневной лимит на бесплатном плане. У Pro пользователей безлимитный доступ ко всему.",
+    "faq.q4":"Есть ли пробный период Pro?","faq.a4":"Бесплатный план позволяет попробовать полный продукт с 1 обработкой в день — без ограничения по времени.",
+    "footer.privacy":"Политика","footer.terms":"Условия","footer.contact":"Контакт"
+  }
+};
+
+function t(key) {
+  const lang = localStorage.getItem('cliply_lang') || 'en';
+  return (i18n[lang] || i18n.en)[key] || i18n.en[key] || key;
+}
+
+function setLang(lang) {
+  localStorage.setItem('cliply_lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`)?.classList.add('active');
+  applyTranslations();
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val) el.textContent = val;
+  });
+}
+
+(function(){
+  const lang = localStorage.getItem('cliply_lang') || 'en';
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`)?.classList.add('active');
+  applyTranslations();
+})();
+
 async function goToCheckout() {
   const res = await fetch('/create-checkout-session', {method:'POST'});
   const data = await res.json();
   if (data.url) location.href = data.url;
 }
 
-// Show "You're on Pro" if already subscribed
 if (localStorage.getItem('cliply_pro') === 'true') {
   const btn = document.getElementById('upgrade-btn');
-  if (btn) btn.outerHTML = '<div class="pro-active-badge">✓ You\'re on Pro</div>';
+  if (btn) btn.outerHTML = `<div class="pro-active-badge">${t('pro.active')}</div>`;
 }
 </script>
 </body>

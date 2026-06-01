@@ -17,17 +17,20 @@
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh}
 
 /* ── NAV ── */
-nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50}
+nav{display:flex;align-items:center;justify-content:space-between;padding:0.85rem 2rem;border-bottom:1px solid var(--border);background:white;position:sticky;top:0;z-index:50;gap:1rem}
 .logo{font-weight:800;font-size:1.15rem;display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--text)}
 .nav-links{display:flex;align-items:center;gap:1.5rem;font-size:0.9rem;font-weight:500}
 .nav-links a{color:var(--muted);text-decoration:none;transition:color .2s}
 .nav-links a:hover{color:var(--text)}
-.nav-links .nav-active{color:var(--accent);font-weight:700}
+.nav-links a.nav-active{color:var(--accent);font-weight:700}
 .logo-icon{width:26px;height:26px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;font-weight:900}
 .nav-right{display:flex;align-items:center;gap:0.75rem}
 .usage-badge{font-size:0.8rem;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:4px 10px;border-radius:100px}
 .btn-upgrade{background:var(--accent);color:white;padding:0.45rem 1rem;border-radius:8px;font-weight:600;font-size:0.85rem;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:background .2s}
 .btn-upgrade:hover{background:var(--accent-dark)}
+.lang-switcher{display:flex;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:2px}
+.lang-btn{background:none;border:none;padding:4px 8px;border-radius:6px;cursor:pointer;font-size:0.75rem;font-weight:600;color:var(--muted);transition:all .2s;font-family:'Inter',sans-serif}
+.lang-btn.active{background:white;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.1)}
 
 /* ── CREATE LAYOUT ── */
 .create-wrap{display:grid;grid-template-columns:1fr 340px;gap:0;min-height:calc(100vh - 105px)}
@@ -110,6 +113,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 
 @media(max-width:800px){
   nav{padding:0.75rem 1.25rem}
+  .nav-links{display:none}
   .create-wrap{grid-template-columns:1fr;min-height:auto}
   .create-left{border-right:none;border-bottom:1px solid var(--border);padding:1.5rem 1.25rem}
   .create-right{padding:1.25rem}
@@ -124,36 +128,38 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 <nav>
   <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
   <div class="nav-links">
-    <a href="/#how">How it works</a>
-    <a href="/app" class="nav-active">Create</a>
-    <a href="/static/plans.html">Pricing</a>
+    <a href="/#how" data-i18n="nav.how">How it works</a>
+    <a href="/app" class="nav-active" data-i18n="nav.create">Create</a>
+    <a href="/static/plans.html" data-i18n="nav.pricing">Pricing</a>
   </div>
   <div class="nav-right">
-    <span class="usage-badge" id="usage-text">1 free / day</span>
-    <button class="btn-upgrade" id="upgrade-btn" onclick="goToCheckout()">Upgrade to Pro →</button>
+    <div class="lang-switcher">
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('es')">ES</button>
+      <button class="lang-btn" onclick="setLang('ru')">RU</button>
+    </div>
+    <span class="usage-badge" id="usage-text" data-i18n="app.usage">1 free / day</span>
+    <button class="btn-upgrade" id="upgrade-btn" onclick="goToCheckout()" data-i18n="app.upgrade">Upgrade to Pro →</button>
   </div>
 </nav>
 
-<!-- ══════════════════════════════════════════
-     PAGE: CREATE (two columns)
-══════════════════════════════════════════ -->
 <div id="page-create">
   <div class="create-wrap">
 
     <!-- LEFT: Repurpose All -->
     <div class="create-left">
-      <div class="col-label">Repurpose</div>
-      <div class="col-title">All four at once</div>
-      <div class="col-sub">Paste a URL — get TikTok hooks, LinkedIn post, Twitter thread & newsletter together.</div>
+      <div class="col-label" data-i18n="app.left.label">Repurpose</div>
+      <div class="col-title" data-i18n="app.left.title">All four at once</div>
+      <div class="col-sub" data-i18n="app.left.sub">Paste a URL — get TikTok hooks, LinkedIn post, Twitter thread & newsletter together.</div>
 
       <div class="input-wrap">
         <input type="text" class="url-input" id="url-input" placeholder="https://www.youtube.com/watch?v=...">
-        <button class="go-btn" id="go-btn" onclick="repurpose()">Go →</button>
+        <button class="go-btn" id="go-btn" onclick="repurpose()" data-i18n="app.go">Go →</button>
       </div>
 
       <div class="progress" id="progress">
-        <div class="progress-step"><span class="step-icon">📄</span><span class="step-text">Fetching transcript...</span></div>
-        <div class="progress-step"><span class="step-icon">🤖</span><span class="step-text">Generating with Claude AI...</span></div>
+        <div class="progress-step"><span class="step-icon">📄</span><span class="step-text" data-i18n="app.step1">Fetching transcript...</span></div>
+        <div class="progress-step"><span class="step-icon">🤖</span><span class="step-text" data-i18n="app.step2">Generating with Claude AI...</span></div>
       </div>
 
       <div class="result" id="result">
@@ -166,45 +172,44 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
         </div>
         <div class="tab-content active" id="tab-tiktok"><div id="tiktok-hooks"></div></div>
         <div class="tab-content" id="tab-linkedin">
-          <div class="content-box" id="linkedin-content"><button class="copy-btn" onclick="copyContent('linkedin-content',this)">Copy</button></div>
+          <div class="content-box" id="linkedin-content"><button class="copy-btn" data-i18n="app.copy" onclick="copyContent('linkedin-content',this)">Copy</button></div>
         </div>
         <div class="tab-content" id="tab-twitter">
-          <div class="content-box" id="twitter-content"><button class="copy-btn" onclick="copyContent('twitter-content',this)">Copy</button></div>
+          <div class="content-box" id="twitter-content"><button class="copy-btn" data-i18n="app.copy" onclick="copyContent('twitter-content',this)">Copy</button></div>
         </div>
         <div class="tab-content" id="tab-newsletter">
-          <div class="content-box" id="newsletter-content"><button class="copy-btn" onclick="copyContent('newsletter-content',this)">Copy</button></div>
+          <div class="content-box" id="newsletter-content"><button class="copy-btn" data-i18n="app.copy" onclick="copyContent('newsletter-content',this)">Copy</button></div>
         </div>
-        <span class="transcript-toggle" onclick="toggleTranscript()">View transcript</span>
+        <span class="transcript-toggle" onclick="toggleTranscript()" data-i18n="app.transcript">View transcript</span>
         <div class="transcript-box" id="transcript-box"></div>
       </div>
     </div>
 
     <!-- RIGHT: Quick Tools -->
     <div class="create-right">
-      <div class="col-label">Quick Tools</div>
-      <div class="col-title">One at a time</div>
-      <div class="col-sub">Pick one content type and generate just that.</div>
+      <div class="col-label" data-i18n="app.right.label">Quick Tools</div>
+      <div class="col-title" data-i18n="app.right.title">One at a time</div>
+      <div class="col-sub" data-i18n="app.right.sub">Pick one content type and generate just that.</div>
 
       <div class="tool-cards">
         <div class="tool-card" id="tc-tiktok" onclick="selectTool('tiktok')">
           <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
-          <div class="tool-info"><h4>TikTok Hooks</h4><p>3 viral scroll-stopping hooks</p></div>
+          <div class="tool-info"><h4 data-i18n="tool.tiktok.name">TikTok Hooks</h4><p data-i18n="tool.tiktok.sub">3 viral scroll-stopping hooks</p></div>
         </div>
         <div class="tool-card" id="tc-linkedin" onclick="selectTool('linkedin')">
           <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
-          <div class="tool-info"><h4>LinkedIn Post</h4><p>Professional post, ready to publish</p></div>
+          <div class="tool-info"><h4 data-i18n="tool.linkedin.name">LinkedIn Post</h4><p data-i18n="tool.linkedin.sub">Professional post, ready to publish</p></div>
         </div>
         <div class="tool-card" id="tc-twitter" onclick="selectTool('twitter')">
           <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l16 16M4 20L20 4"/><path d="M20 4h-5m5 0v5M4 20h5m-5 0v-5"/></svg></div>
-          <div class="tool-info"><h4>Twitter Thread</h4><p>5–7 tweet thread from key insights</p></div>
+          <div class="tool-info"><h4 data-i18n="tool.twitter.name">Twitter Thread</h4><p data-i18n="tool.twitter.sub">5–7 tweet thread from key insights</p></div>
         </div>
         <div class="tool-card" id="tc-newsletter" onclick="selectTool('newsletter')">
           <div class="tool-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></div>
-          <div class="tool-info"><h4>Newsletter</h4><p>Email section with subject line</p></div>
+          <div class="tool-info"><h4 data-i18n="tool.newsletter.name">Newsletter</h4><p data-i18n="tool.newsletter.sub">Email section with subject line</p></div>
         </div>
       </div>
 
-      <!-- Inline tool input/result -->
       <div class="tool-area" id="tool-area">
         <div style="height:1px;background:var(--border);margin:1.25rem 0"></div>
         <div class="tool-area-title" id="tool-area-title">🎵 TikTok Hooks</div>
@@ -213,7 +218,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
           <button class="go-btn" id="tool-go-btn" onclick="runTool()">→</button>
         </div>
         <div class="progress" id="tool-progress">
-          <div class="progress-step"><span class="step-icon">🤖</span><span class="step-text">Generating...</span></div>
+          <div class="progress-step"><span class="step-icon">🤖</span><span class="step-text" data-i18n="app.generating">Generating...</span></div>
         </div>
         <div class="tool-output" id="tool-output"></div>
       </div>
@@ -227,16 +232,106 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
   <div class="modal-card">
     <button class="modal-close" onclick="closeModal()">✕</button>
     <div class="modal-icon">🔒</div>
-    <h2>You've used your free repurpose today</h2>
-    <p>Upgrade to Pro for unlimited repurposes and all quick tools.</p>
+    <h2 data-i18n="modal.title">You've used your free repurpose today</h2>
+    <p data-i18n="modal.sub">Upgrade to Pro for unlimited repurposes and all quick tools.</p>
     <div class="modal-btns">
-      <button class="modal-btn-primary" onclick="goToCheckout()">Upgrade to Pro — $19/mo →</button>
-      <button class="modal-btn-outline" onclick="location.href='/static/plans.html'">See all plans</button>
+      <button class="modal-btn-primary" onclick="goToCheckout()" data-i18n="modal.btn1">Upgrade to Pro — $19/mo →</button>
+      <button class="modal-btn-outline" onclick="location.href='/static/plans.html'" data-i18n="modal.btn2">See all plans</button>
     </div>
   </div>
 </div>
 
 <script>
+// ── i18n ───────────────────────────────────────────
+const i18n = {
+  en: {
+    "nav.how":"How it works","nav.create":"Create","nav.pricing":"Pricing",
+    "app.usage":"1 free / day","app.upgrade":"Upgrade to Pro →",
+    "app.left.label":"Repurpose","app.left.title":"All four at once",
+    "app.left.sub":"Paste a URL — get TikTok hooks, LinkedIn post, Twitter thread & newsletter together.",
+    "app.go":"Go →","app.copy":"Copy","app.transcript":"View transcript",
+    "app.step1":"Fetching transcript...","app.step2":"Generating with Claude AI...","app.generating":"Generating...",
+    "app.right.label":"Quick Tools","app.right.title":"One at a time",
+    "app.right.sub":"Pick one content type and generate just that.",
+    "app.url.ph":"https://www.youtube.com/watch?v=...","app.tool.ph":"Paste YouTube URL...",
+    "tool.tiktok.name":"TikTok Hooks","tool.tiktok.sub":"3 viral scroll-stopping hooks",
+    "tool.linkedin.name":"LinkedIn Post","tool.linkedin.sub":"Professional post, ready to publish",
+    "tool.twitter.name":"Twitter Thread","tool.twitter.sub":"5–7 tweet thread from key insights",
+    "tool.newsletter.name":"Newsletter","tool.newsletter.sub":"Email section with subject line",
+    "modal.title":"You've used your free repurpose today",
+    "modal.sub":"Upgrade to Pro for unlimited repurposes and all quick tools.",
+    "modal.btn1":"Upgrade to Pro — $19/mo →","modal.btn2":"See all plans",
+    "pro.unlimited":"Pro — Unlimited","pro.badge":"✓ Pro"
+  },
+  es: {
+    "nav.how":"Cómo funciona","nav.create":"Crear","nav.pricing":"Precios",
+    "app.usage":"1 gratis / día","app.upgrade":"Mejorar a Pro →",
+    "app.left.label":"Repurpose","app.left.title":"Los cuatro a la vez",
+    "app.left.sub":"Pega una URL — obtén hooks TikTok, post LinkedIn, hilo Twitter y newsletter juntos.",
+    "app.go":"Ir →","app.copy":"Copiar","app.transcript":"Ver transcripción",
+    "app.step1":"Obteniendo transcripción...","app.step2":"Generando con Claude AI...","app.generating":"Generando...",
+    "app.right.label":"Herramientas","app.right.title":"Uno a la vez",
+    "app.right.sub":"Elige un tipo de contenido y genera solo ese.",
+    "app.url.ph":"https://www.youtube.com/watch?v=...","app.tool.ph":"Pega la URL de YouTube...",
+    "tool.tiktok.name":"Hooks TikTok","tool.tiktok.sub":"3 hooks virales irresistibles",
+    "tool.linkedin.name":"Post LinkedIn","tool.linkedin.sub":"Post profesional listo para publicar",
+    "tool.twitter.name":"Hilo Twitter","tool.twitter.sub":"Hilo de 5–7 tweets con ideas clave",
+    "tool.newsletter.name":"Newsletter","tool.newsletter.sub":"Sección de email con asunto",
+    "modal.title":"Has usado tu repurpose gratis hoy",
+    "modal.sub":"Mejora a Pro para repurposes ilimitados y todas las herramientas.",
+    "modal.btn1":"Mejorar a Pro — $19/mes →","modal.btn2":"Ver todos los planes",
+    "pro.unlimited":"Pro — Ilimitado","pro.badge":"✓ Pro"
+  },
+  ru: {
+    "nav.how":"Как работает","nav.create":"Создать","nav.pricing":"Цены",
+    "app.usage":"1 бесплатно / день","app.upgrade":"Перейти на Pro →",
+    "app.left.label":"Обработка","app.left.title":"Всё сразу",
+    "app.left.sub":"Вставь URL — получи хуки TikTok, LinkedIn пост, Twitter тред и newsletter вместе.",
+    "app.go":"Вперёд →","app.copy":"Копировать","app.transcript":"Показать транскрипт",
+    "app.step1":"Загружаем транскрипт...","app.step2":"Генерируем с Claude AI...","app.generating":"Генерируем...",
+    "app.right.label":"Быстрые инструменты","app.right.title":"По одному",
+    "app.right.sub":"Выбери тип контента и сгенерируй только его.",
+    "app.url.ph":"https://www.youtube.com/watch?v=...","app.tool.ph":"Вставь YouTube URL...",
+    "tool.tiktok.name":"TikTok Хуки","tool.tiktok.sub":"3 вирусных цепляющих хука",
+    "tool.linkedin.name":"LinkedIn Пост","tool.linkedin.sub":"Профессиональный пост, готов к публикации",
+    "tool.twitter.name":"Twitter Тред","tool.twitter.sub":"Тред 5–7 твитов из ключевых идей",
+    "tool.newsletter.name":"Newsletter","tool.newsletter.sub":"Email секция с темой письма",
+    "modal.title":"Вы использовали бесплатную обработку сегодня",
+    "modal.sub":"Перейдите на Pro для безлимитной обработки и всех инструментов.",
+    "modal.btn1":"Перейти на Pro — $19/мес →","modal.btn2":"Все тарифы",
+    "pro.unlimited":"Pro — Безлимит","pro.badge":"✓ Pro"
+  }
+};
+
+function t(key) {
+  const lang = localStorage.getItem('cliply_lang') || 'en';
+  return (i18n[lang] || i18n.en)[key] || (i18n.en)[key] || key;
+}
+
+function setLang(lang) {
+  localStorage.setItem('cliply_lang', lang);
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`)?.classList.add('active');
+  applyTranslations();
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    const val = t(key);
+    if (val) el.textContent = val;
+  });
+  document.getElementById('url-input').placeholder = t('app.url.ph');
+  document.getElementById('tool-url-input').placeholder = t('app.tool.ph');
+}
+
+// Init lang
+(function(){
+  const lang = localStorage.getItem('cliply_lang') || 'en';
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`)?.classList.add('active');
+  applyTranslations();
+})();
+
 // ── State ──────────────────────────────────────────
 let usageCount = 0;
 const MAX_FREE = 1;
@@ -253,6 +348,7 @@ async function goToCheckout() {
 }
 function openModal() { document.getElementById('upgrade-modal').classList.add('show'); }
 function closeModal() { document.getElementById('upgrade-modal').classList.remove('show'); }
+
 // ── Repurpose (left column) ────────────────────────
 async function repurpose() {
   const url = document.getElementById('url-input').value.trim();
@@ -280,7 +376,7 @@ async function repurpose() {
   } catch(e) {
     alert('Error: ' + (e.message || 'Something went wrong'));
   } finally {
-    btn.disabled = false; btn.textContent = 'Go →';
+    btn.disabled = false; btn.textContent = t('app.go');
     hideProgress('progress');
   }
 }
@@ -298,7 +394,7 @@ function displayResult(data) {
   const hooksEl = document.getElementById('tiktok-hooks');
   hooksEl.innerHTML = '';
   (data.content.tiktok_hooks || []).forEach(hook => {
-    hooksEl.innerHTML += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">Copy</button></div>`;
+    hooksEl.innerHTML += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">${t('app.copy')}</button></div>`;
   });
   setBoxContent('linkedin-content', data.content.linkedin_post);
   setBoxContent('twitter-content', data.content.twitter_thread);
@@ -316,13 +412,13 @@ function switchTab(name, btn) {
 
 // ── Quick Tools (right column) ────────────────────
 const TOOL_ICONS = {tiktok:'🎵', linkedin:'💼', twitter:'🐦', newsletter:'📧'};
-const TOOL_NAMES = {tiktok:'TikTok Hooks', linkedin:'LinkedIn Post', twitter:'Twitter Thread', newsletter:'Newsletter'};
 
 function selectTool(type) {
   currentTool = type;
   document.querySelectorAll('.tool-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('tc-' + type).classList.add('selected');
-  document.getElementById('tool-area-title').textContent = TOOL_ICONS[type] + ' ' + TOOL_NAMES[type];
+  const names = {tiktok:'tool.tiktok.name', linkedin:'tool.linkedin.name', twitter:'tool.twitter.name', newsletter:'tool.newsletter.name'};
+  document.getElementById('tool-area-title').textContent = TOOL_ICONS[type] + ' ' + t(names[type]);
   document.getElementById('tool-output').innerHTML = '';
   document.getElementById('tool-url-input').value = '';
   document.getElementById('tool-area').classList.add('show');
@@ -368,13 +464,13 @@ function renderToolOutput(data, type) {
   if (type === 'tiktok') {
     let html = '';
     (data.content.tiktok_hooks || []).forEach(hook => {
-      html += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">Copy</button></div>`;
+      html += `<div class="hook-card"><div class="hook-text">${hook}</div><button class="copy-btn" style="top:50%;transform:translateY(-50%)" onclick="copyText('${escQ(hook)}',this)">${t('app.copy')}</button></div>`;
     });
     out.innerHTML = html;
   } else {
     const textMap = {linkedin:data.content.linkedin_post, twitter:data.content.twitter_thread, newsletter:data.content.newsletter};
     const txt = textMap[type] || '';
-    out.innerHTML = `<div class="content-box" id="tool-cb">${txt}<button class="copy-btn" onclick="copyText(document.getElementById('tool-cb').childNodes[0].textContent,this)">Copy</button></div>`;
+    out.innerHTML = `<div class="content-box" id="tool-cb">${txt}<button class="copy-btn" onclick="copyText(document.getElementById('tool-cb').childNodes[0].textContent,this)">${t('app.copy')}</button></div>`;
     document.getElementById('tool-cb').childNodes[0].textContent = txt;
   }
 }
@@ -384,7 +480,7 @@ function copyContent(elId, btn) { copyText(document.getElementById(elId).childNo
 function copyText(text, btn) {
   navigator.clipboard.writeText(text);
   const orig = btn.textContent;
-  btn.textContent = 'Copied!'; btn.classList.add('copied');
+  btn.textContent = '✓'; btn.classList.add('copied');
   setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
 }
 function escQ(s) { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'\\"'); }
@@ -414,9 +510,9 @@ document.getElementById('tool-url-input').addEventListener('keydown', e => { if(
 })();
 
 function setProUI() {
-  document.getElementById('usage-text').textContent = 'Pro — Unlimited';
+  document.getElementById('usage-text').textContent = t('pro.unlimited');
   const btn = document.getElementById('upgrade-btn');
-  btn.textContent = '✓ Pro'; btn.style.background = '#10b981'; btn.style.cursor = 'default'; btn.onclick = null;
+  btn.textContent = t('pro.badge'); btn.style.background = '#10b981'; btn.style.cursor = 'default'; btn.onclick = null;
 }
 </script>
 </body>
