@@ -363,7 +363,7 @@ async function repurpose() {
 
   try {
     const body = {url};
-    if (isPro() && getProEmail()) body.email = getProEmail();
+    const storedEmail = getProEmail(); if (storedEmail) body.email = storedEmail;
     const res = await fetch('/repurpose', {
       method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
     });
@@ -439,7 +439,7 @@ async function runTool() {
 
   try {
     const body = {url};
-    if (isPro() && getProEmail()) body.email = getProEmail();
+    const storedEmail = getProEmail(); if (storedEmail) body.email = storedEmail;
     const res = await fetch('/repurpose', {
       method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)
     });

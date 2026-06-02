@@ -87,6 +87,9 @@ def check_pro(email: str) -> bool:
         return False
 
 
+OWNER_TOKEN = os.environ.get("OWNER_TOKEN", "")
+
+
 @app.get("/")
 def index():
     return FileResponse("static/index.html")
@@ -95,6 +98,13 @@ def index():
 @app.get("/app")
 def app_page():
     return FileResponse("static/app.html")
+
+
+@app.get("/owner-login")
+def owner_login(token: str = ""):
+    if not OWNER_TOKEN or token != OWNER_TOKEN:
+        raise HTTPException(status_code=403, detail="Forbidden")
+    return {"email": OWNER_EMAIL, "pro": True}
 
 
 class RepurposeRequest(BaseModel):
