@@ -58,7 +58,10 @@ def get_transcript(url: str) -> tuple[str, str]:
             raise ValueError("This video has no subtitles. Please try a video with auto-generated captions.")
         transcript_list = transcript_obj.fetch()
 
-    text = " ".join(chunk["text"] for chunk in transcript_list)
+    text = " ".join(
+        chunk.text if hasattr(chunk, "text") else chunk["text"]
+        for chunk in transcript_list
+    )
     return text, title
 
 
