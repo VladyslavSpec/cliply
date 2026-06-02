@@ -12,16 +12,16 @@ def _build_ytt():
     webshare_user = os.environ.get("WEBSHARE_USERNAME", "")
     webshare_pass = os.environ.get("WEBSHARE_PASSWORD", "")
 
-    if webshare_user and webshare_pass:
-        return YouTubeTranscriptApi(proxy_config=WebshareProxyConfig(
-            proxy_username=webshare_user,
-            proxy_password=webshare_pass,
-        ))
-
-    # Remove any system proxy env vars — Railway may set these and they
-    # break requests to YouTube (returns 400 via its internal proxy)
+    # Clear any system proxy vars to avoid conflicts
     for key in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
         os.environ.pop(key, None)
+
+    if webshare_user and webshare_pass:
+        proxy_url = f"http://{webshare_user}:{webshare_pass}@p.webshare.io:80"
+        return YouTubeTranscriptApi(proxy_config=GenericProxyConfig(
+            http_url=proxy_url,
+            https_url=proxy_url,
+        ))
 
     return YouTubeTranscriptApi()
 
