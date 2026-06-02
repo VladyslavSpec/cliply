@@ -67,7 +67,12 @@ def get_ip(req: Request) -> str:
     return req.client.host
 
 
+OWNER_EMAIL = os.environ.get("OWNER_EMAIL", "derinvlad@gmail.com")
+
+
 def check_pro(email: str) -> bool:
+    if email == OWNER_EMAIL:
+        return True
     if not email or not stripe.api_key:
         return False
     try:
@@ -143,8 +148,8 @@ async def create_checkout_session(req: Request):
         payment_method_types=["card"],
         line_items=[{"price": STRIPE_PRICE_ID, "quantity": 1}],
         mode="subscription",
-        success_url=f"{base_url}/static/success.html?session_id={{CHECKOUT_SESSION_ID}}",
-        cancel_url=f"{base_url}/app",
+        success_url="https://tryclipply.com/static/success.html?session_id={CHECKOUT_SESSION_ID}",
+        cancel_url="https://tryclipply.com/app",
     )
     return {"url": session.url}
 
