@@ -20,6 +20,8 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:0.85re
 .nav-links a{color:var(--muted);transition:color .2s}
 .nav-links a:hover{color:var(--text)}
 .nav-links a.active{color:var(--accent)}
+.nav-links a.nav-create{background:var(--accent);color:white!important;padding:0.5rem 1.1rem;border-radius:8px;font-weight:600;box-shadow:0 0 0 5px rgba(255,107,107,0.15);text-decoration:none;transition:all .2s}
+.nav-links a.nav-create:hover{background:var(--accent-dark);box-shadow:0 0 0 7px rgba(255,107,107,0.2);transform:translateY(-1px)}
 .nav-right{display:flex;align-items:center;gap:0.75rem}
 .btn-try{background:var(--accent);color:white;padding:0.5rem 1.1rem;border-radius:8px;font-weight:600;font-size:0.88rem;transition:background .2s}
 .btn-try:hover{background:var(--accent-dark)}
@@ -78,7 +80,7 @@ footer a:hover{color:var(--text)}
   <a href="/" class="logo"><div class="logo-icon">C</div>Cliply</a>
   <div class="nav-links">
     <a href="/#how" data-i18n="nav.how">How it works</a>
-    <a href="/app" data-i18n="nav.create">Create</a>
+    <a href="/app" class="nav-create" data-i18n="nav.create">Create</a>
     <a href="/static/plans.html" class="active" data-i18n="nav.pricing">Pricing</a>
   </div>
   <div class="nav-right">
