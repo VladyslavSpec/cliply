@@ -1,10 +1,13 @@
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from pydantic import BaseModel, field_validator
 from collections import defaultdict
 from datetime import date
 import os
+import re
 import asyncio
 import stripe
 from core import get_transcript, generate_content
@@ -15,7 +18,45 @@ STRIPE_PRICE_ID = os.environ.get("STRIPE_PRICE_ID", "")
 LIMITS = {"free": 1}
 request_counts: dict = defaultdict(lambda: defaultdict(int))
 
+YOUTUBE_URL_RE = re.compile(
+    r'^https?://(www\.)?(youtube\.com/(watch\?|shorts/|embed/)|youtu\.be/)',
+    re.IGNORECASE,
+)
+
+
+class SecurityHeadersMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline'; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+            "font-src 'self' https://fonts.gstatic.com; "
+            "img-src 'self' data: https:; "
+            "media-src 'self'; "
+            "connect-src 'self' https://js.stripe.com;"
+        )
+        return response
+
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "https://tryclipply.com",
+        "https://www.tryclipply.com",
+        "http://localhost:8000",
+        "http://localhost:8001",
+    ],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
+app.add_middleware(SecurityHeadersMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
@@ -54,6 +95,13 @@ def app_page():
 class RepurposeRequest(BaseModel):
     url: str
     email: str = ""
+
+    @field_validator("url")
+    @classmethod
+    def validate_youtube_url(cls, v: str) -> str:
+        if not YOUTUBE_URL_RE.match(v.strip()):
+            raise ValueError("Only YouTube URLs are supported")
+        return v.strip()
 
 
 @app.post("/repurpose")
