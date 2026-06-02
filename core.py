@@ -11,18 +11,18 @@ from youtube_transcript_api.proxies import WebshareProxyConfig, GenericProxyConf
 def _build_ytt():
     webshare_user = os.environ.get("WEBSHARE_USERNAME", "")
     webshare_pass = os.environ.get("WEBSHARE_PASSWORD", "")
-    generic_proxy = os.environ.get("HTTPS_PROXY", "") or os.environ.get("HTTP_PROXY", "")
 
     if webshare_user and webshare_pass:
         return YouTubeTranscriptApi(proxy_config=WebshareProxyConfig(
             proxy_username=webshare_user,
             proxy_password=webshare_pass,
         ))
-    elif generic_proxy:
-        return YouTubeTranscriptApi(proxy_config=GenericProxyConfig(
-            http_url=generic_proxy,
-            https_url=generic_proxy,
-        ))
+
+    # Remove any system proxy env vars — Railway may set these and they
+    # break requests to YouTube (returns 400 via its internal proxy)
+    for key in ("HTTP_PROXY", "HTTPS_PROXY", "http_proxy", "https_proxy"):
+        os.environ.pop(key, None)
+
     return YouTubeTranscriptApi()
 
 
