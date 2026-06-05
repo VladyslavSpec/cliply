@@ -103,6 +103,14 @@ def _spa_response():
     return FileResponse("static/index.html")
 
 
+@app.get("/favicon.svg")
+def favicon():
+    path = f"{_DIST}/favicon.svg"
+    if os.path.isfile(path):
+        return FileResponse(path, media_type="image/svg+xml")
+    raise HTTPException(status_code=404)
+
+
 @app.get("/")
 def index():
     return _spa_response()
