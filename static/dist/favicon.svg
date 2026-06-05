@@ -1,11 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="5" fill="#5B4BE0"/>
-  <!-- Press Start 2P "C" — 3px pixel grid, 6col x 7row, centered -->
-  <rect x="13" y="6"  width="12" height="3" fill="#fff"/>
-  <rect x="10" y="9"  width="6"  height="3" fill="#fff"/>
-  <rect x="7"  y="12" width="6"  height="3" fill="#fff"/>
-  <rect x="7"  y="15" width="3"  height="3" fill="#fff"/>
-  <rect x="7"  y="18" width="6"  height="3" fill="#fff"/>
-  <rect x="10" y="21" width="6"  height="3" fill="#fff"/>
-  <rect x="13" y="24" width="12" height="3" fill="#fff"/>
+  <text x="16" y="22"
+        text-anchor="middle"
+        font-family="'Courier New', Consolas, monospace"
+        font-size="22"
+        font-weight="900"
+        fill="#ffffff">C</text>
 </svg>
