@@ -33,12 +33,13 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
         response.headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()"
         response.headers["Content-Security-Policy"] = (
             "default-src 'self'; "
-            "script-src 'self' 'unsafe-inline'; "
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
-            "font-src 'self' https://fonts.gstatic.com; "
-            "img-src 'self' data: https:; "
-            "media-src 'self'; "
-            "connect-src 'self' https://js.stripe.com;"
+            "font-src 'self' https://fonts.gstatic.com data:; "
+            "img-src 'self' data: blob: https:; "
+            "media-src 'self' blob:; "
+            "worker-src 'self' blob:; "
+            "connect-src 'self' https://js.stripe.com https://fonts.googleapis.com; "
         )
         return response
 
@@ -58,6 +59,12 @@ app.add_middleware(
 )
 app.add_middleware(SecurityHeadersMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
+
+_DIST = "static/dist"
+_DIST_EXISTS = os.path.isdir(_DIST)
+
+if _DIST_EXISTS:
+    app.mount("/assets", StaticFiles(directory=f"{_DIST}/assets"), name="assets")
 
 
 def get_ip(req: Request) -> str:
@@ -90,14 +97,25 @@ def check_pro(email: str) -> bool:
 OWNER_TOKEN = os.environ.get("OWNER_TOKEN", "")
 
 
+def _spa_response():
+    if _DIST_EXISTS:
+        return FileResponse(f"{_DIST}/index.html")
+    return FileResponse("static/index.html")
+
+
 @app.get("/")
 def index():
-    return FileResponse("static/index.html")
+    return _spa_response()
 
 
 @app.get("/app")
 def app_page():
-    return FileResponse("static/app.html")
+    return _spa_response()
+
+
+@app.get("/plans")
+def plans_page():
+    return _spa_response()
 
 
 @app.get("/owner-login")
