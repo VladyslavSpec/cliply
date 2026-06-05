@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="6" fill="#07071A"/>
+  <!-- Pixel C shape using squares -->
+  <rect x="8"  y="6"  width="16" height="4" fill="#5B4BE0"/>
+  <rect x="8"  y="10" width="4"  height="4" fill="#5B4BE0"/>
+  <rect x="8"  y="14" width="4"  height="4" fill="#818CF8"/>
+  <rect x="8"  y="18" width="4"  height="4" fill="#5B4BE0"/>
+  <rect x="8"  y="22" width="16" height="4" fill="#5B4BE0"/>
+  <!-- Glow dots top-right and bottom-right corners of C -->
+  <rect x="22" y="6"  width="2"  height="2" fill="#06B6D4"/>
+  <rect x="22" y="24" width="2"  height="2" fill="#06B6D4"/>
+</svg>
