@@ -39,7 +39,7 @@ class SecurityHeadersMiddleware(BaseHTTPMiddleware):
             "img-src 'self' data: blob: https:; "
             "media-src 'self' blob:; "
             "worker-src 'self' blob:; "
-            "connect-src 'self' https://js.stripe.com https://fonts.googleapis.com; "
+            "connect-src 'self' https://js.stripe.com https://fonts.googleapis.com"
         )
         return response
 
